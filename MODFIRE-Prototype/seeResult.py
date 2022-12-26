@@ -1,6 +1,6 @@
 import csv, re, sqlite3
 
-con = sqlite3.connect("res/database_modfire.db")
+con = sqlite3.connect("database_modfire.db")
 cur = con.cursor()
 Filemame = "Results/outputPairsMulti.csv"
 f=open(Filemame,"r")

@@ -267,3 +267,17 @@ In Single Criteria optimization the following file is written to the Results fol
 
 outputPairsSingle.csv:- MU/Presc pairs for the solution found 
 
+# Step 5: Visualizing the example.
+
+
+Run seeMap.py to see the Vale de Sousa Forest and it's sub-divisions
+
+Run plotPareto.py to plot a 2d Pareto frontier using the Results/parento.csv file (Only works if there are only 2 criteria in the pareto.csv file)
+
+Run seeResults.py to observe the contents of the solutions in the outputPairsMulti.csv file
+
+Run the makeSolFile.py and then the Maps/maps.py file to paint the solution in the outputPairsSingle.csv onto files in the Maps/MapOutput folder
+
+Run the makeSolFileMulti.py and then the Maps/maps.py file to pick a solution from the outputPairsSingleMult.csv file and paint the solution onto files in the Maps/MapOutput folder
+
+
