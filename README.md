@@ -1,5 +1,7 @@
 # MODFIRE
 
+This software requires a Linux operating system and Java 11.
+
 # Forest Management
 
 The purpose of this implementation is to use Constraint Programming to find valid solutions for problems of forest management.
