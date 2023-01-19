@@ -185,6 +185,9 @@ public class UG {
 
                 toInsert.crit10 = returnInsertable2(reader10);
 
+                if(toInsert.adj[0] == -1){
+                    toInsert.valid = false;
+                }
 
                 array[index] = toInsert;
                 index++;
