@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+/*
 public class MainTime {
 
     public static void giveDomains (Model model, IntVar[] ugs, String dir, IntVar[] crit0, IntVar[] crit1,
@@ -210,7 +210,7 @@ public class MainTime {
         8-R
         9-Rait
         10-Sbiom
-         */
+
 
         String[] varNames = new String[]{"Crit0","Crit1","Crit2","Crit3","Crit4","Crit5","Crit6","Crit7","Crit8","Crit9","Crit10"};
         ArrayList<Boolean> flags = new ArrayList<>();
@@ -507,4 +507,4 @@ public class MainTime {
 
         System.out.println(l + " solutions");
     }
-}
+} */

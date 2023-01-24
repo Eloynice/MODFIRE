@@ -14,77 +14,144 @@ public class MainWithSpecific {
 
     public static void giveDomains (Model model, IntVar[] ugs, String dir, IntVar[] crit0, IntVar[] crit1,
                                     IntVar[] crit2, IntVar[] crit3, IntVar[] crit4, IntVar[] crit5,
-                                    IntVar[] crit6, IntVar[] crit7, IntVar[] crit8,IntVar[] crit9,IntVar[] crit10, UG[] nodes){
+                                    IntVar[] crit6, IntVar[] crit7, IntVar[] crit8,IntVar[] crit9,IntVar[] crit10, UG[] nodes, ArrayList<Boolean> flags){
         int index = 0;
         try {
             File allUg = new File(dir + "/ugs_init.txt");
             Scanner readerUg = new Scanner(allUg);
 
             File critFile0 = new File(dir + "/crit_file0.txt");
-            Scanner reader0 = new Scanner(critFile0);
+            Scanner reader0 = null;
+            if(flags.get(0))
+                reader0 = new Scanner(critFile0);
 
             File critFile1 = new File(dir + "/crit_file1.txt");
-            Scanner reader1 = new Scanner(critFile1);
+            Scanner reader1 = null;
+            if(flags.get(1))
+                reader1 = new Scanner(critFile1);
 
             File critFile2 = new File(dir + "/crit_file2.txt");
-            Scanner reader2 = new Scanner(critFile2);
+            Scanner reader2 = null;
+            if(flags.get(2))
+                reader2 = new Scanner(critFile2);
+
 
             File critFile3 = new File(dir + "/crit_file3.txt");
-            Scanner reader3 = new Scanner(critFile3);
+            Scanner reader3 = null;
+            if(flags.get(3))
+                reader3 = new Scanner(critFile3);
 
             File critFile4 = new File(dir + "/crit_file4.txt");
-            Scanner reader4 = new Scanner(critFile4);
+            Scanner reader4 = null;
+            if(flags.get(4))
+                reader4 = new Scanner(critFile4);
 
             File critFile5 = new File(dir + "/crit_file5.txt");
-            Scanner reader5 = new Scanner(critFile5);
+            Scanner reader5 = null;
+            if(flags.get(5))
+                reader5 = new Scanner(critFile5);
 
             File critFile6 = new File(dir + "/crit_file6.txt");
-            Scanner reader6 = new Scanner(critFile6);
+            Scanner reader6 = null;
+            if(flags.get(6))
+                reader6 = new Scanner(critFile6);
 
             File critFile7 = new File(dir + "/crit_file7.txt");
-            Scanner reader7 = new Scanner(critFile7);
+            Scanner reader7 = null;
+            if(flags.get(7))
+                reader7 = new Scanner(critFile7);
 
             File critFile8 = new File(dir + "/crit_file8.txt");
-            Scanner reader8 = new Scanner(critFile8);
+            Scanner reader8 = null;
+            if(flags.get(8))
+                reader8 = new Scanner(critFile8);
 
             File critFile9 = new File(dir + "/crit_file9.txt");
-            Scanner reader9 = new Scanner(critFile9);
+            Scanner reader9 = null;
+            if(flags.get(9))
+                reader9 = new Scanner(critFile9);
 
             File critFile10 = new File(dir + "/crit_file10.txt");
-            Scanner reader10 = new Scanner(critFile10);
+            Scanner reader10 = null;
+            if(flags.get(10))
+                reader10 = new Scanner(critFile10);
 
             while (readerUg.hasNextLine()) {
                 String dataUg = readerUg.nextLine();
 
-                String data0 = reader0.nextLine();
-                String data1 = reader1.nextLine();
-                String data2 = reader2.nextLine();
-                String data3 = reader3.nextLine();
-                String data4 = reader4.nextLine();
-                String data5 = reader5.nextLine();
-                String data6 = reader6.nextLine();
-                String data7 = reader7.nextLine();
-                String data8 = reader8.nextLine();
-                String data9 = reader9.nextLine();
-                String data10 = reader10.nextLine();
+                String data0 = null;
+                if(flags.get(0))
+                    data0 = reader0.nextLine();
+                String data1 = null;
+                if(flags.get(1))
+                    data1 = reader1.nextLine();
+                String data2 = null;
+                if(flags.get(2))
+                    data2 = reader2.nextLine();
+                String data3 = null;
+                if(flags.get(3))
+                    data3 = reader3.nextLine();
+                String data4 = null;
+                if(flags.get(4))
+                    data4 = reader4.nextLine();
+                String data5 = null;
+                if(flags.get(5))
+                    data5 = reader5.nextLine();
+                String data6 = null;
+                if(flags.get(6))
+                    data6 = reader6.nextLine();
+                String data7 = null;
+                if(flags.get(7))
+                    data7 = reader7.nextLine();
+                String data8 = null;
+                if(flags.get(8))
+                    data8 = reader8.nextLine();
+                String data9 = null;
+                if(flags.get(9))
+                    data9 = reader9.nextLine();
+                String data10 = null;
+                if(flags.get(10))
+                    data10 = reader10.nextLine();
 
 
 
 
-                if(nodes[index].valid) {
+                if(nodes[index].valid || nodes[index].noAdjacencies) {
                     String[] str_split = dataUg.split(",", 0);
 
-                    String[] str_split0 = data0.split(",", 0);
-                    String[] str_split1 = data1.split(",", 0);
-                    String[] str_split2 = data2.split(",", 0);
-                    String[] str_split3 = data3.split(",", 0);
-                    String[] str_split4 = data4.split(",", 0);
-                    String[] str_split5 = data5.split(",", 0);
-                    String[] str_split6 = data6.split(",", 0);
-                    String[] str_split7 = data7.split(",", 0);
-                    String[] str_split8 = data8.split(",", 0);
-                    String[] str_split9 = data9.split(",", 0);
-                    String[] str_split10 = data10.split(",", 0);
+                    String[] str_split0 = null;
+                    if(flags.get(0))
+                        str_split0 = data0.split(",", 0);
+                    String[] str_split1 = null;
+                    if(flags.get(1))
+                        str_split1 = data1.split(",", 0);
+                    String[] str_split2 = null;
+                    if(flags.get(2))
+                        str_split2 = data2.split(",", 0);
+                    String[] str_split3 = null;
+                    if(flags.get(3))
+                        str_split3 = data3.split(",", 0);
+                    String[] str_split4 = null;
+                    if(flags.get(4))
+                        str_split4 = data4.split(",", 0);
+                    String[] str_split5 = null;
+                    if(flags.get(5))
+                        str_split5 = data5.split(",", 0);
+                    String[] str_split6 = null;
+                    if(flags.get(6))
+                        str_split6 = data6.split(",", 0);
+                    String[] str_split7 = null;
+                    if(flags.get(7))
+                        str_split7 = data7.split(",", 0);
+                    String[] str_split8 = null;
+                    if(flags.get(8))
+                        str_split8 = data8.split(",", 0);
+                    String[] str_split9 = null;
+                    if(flags.get(9))
+                        str_split9 = data9.split(",", 0);
+                    String[] str_split10 = null;
+                    if(flags.get(10))
+                        str_split10 = data10.split(",", 0);
 
 
 
@@ -105,19 +172,38 @@ public class MainWithSpecific {
 
                     for (int i = 0; i < size; i++) {
                         toInsert[i] = Integer.parseInt(str_split[i]);
-                        toInsert0[i] = (int) Float.parseFloat(str_split0[i]);
-                        toInsert1[i] = (int) Float.parseFloat(str_split1[i]);
+                        if(flags.get(0)) toInsert0[i] = (int) Float.parseFloat(str_split0[i]);
+                        else toInsert0[i] = 0;
 
-                        toInsert2[i] = (int) Float.parseFloat(str_split2[i]);
-                        toInsert3[i] = (int) Float.parseFloat(str_split3[i]);
-                        toInsert4[i] = (int) Float.parseFloat(str_split4[i]);
-                        toInsert5[i] = (int) Float.parseFloat(str_split5[i]);
-                        toInsert6[i] = (int) Float.parseFloat(str_split6[i]);
-                        toInsert7[i] = (int) Float.parseFloat(str_split7[i]);
-                        toInsert8[i] = (int) Float.parseFloat(str_split8[i]);
-                        toInsert9[i] = (int) Float.parseFloat(str_split9[i]);
-                        toInsert10[i] = (int) Float.parseFloat(str_split10[i]);
+                        if(flags.get(1)) toInsert1[i] = (int) Float.parseFloat(str_split1[i]);
+                        else toInsert1[i] = 0;
 
+                        if(flags.get(2)) toInsert2[i] = (int) Float.parseFloat(str_split2[i]);
+                        else toInsert2[i] = 0;
+
+                        if(flags.get(3)) toInsert3[i] = (int) Float.parseFloat(str_split3[i]);
+                        else toInsert3[i] = 0;
+
+                        if(flags.get(4)) toInsert4[i] = (int) Float.parseFloat(str_split4[i]);
+                        else toInsert4[i] = 0;
+
+                        if(flags.get(5)) toInsert5[i] = (int) Float.parseFloat(str_split5[i]);
+                        else toInsert5[i] = 0;
+
+                        if(flags.get(6)) toInsert6[i] = (int) Float.parseFloat(str_split6[i]);
+                        else toInsert6[i] = 0;
+
+                        if(flags.get(7)) toInsert7[i] = (int) Float.parseFloat(str_split7[i]);
+                        else toInsert7[i] = 0;
+
+                        if(flags.get(8)) toInsert8[i] = (int) Float.parseFloat(str_split8[i]);
+                        else toInsert8[i] = 0;
+
+                        if(flags.get(9)) toInsert9[i] = (int) Float.parseFloat(str_split9[i]);
+                        else toInsert9[i] = 0;
+
+                        if(flags.get(10)) toInsert10[i] = (int) Float.parseFloat(str_split10[i]);
+                        else toInsert10[i] = 0;
 
                     }
 
@@ -161,17 +247,17 @@ public class MainWithSpecific {
             }
 
             readerUg.close();
-            reader0.close();
-            reader1.close();
-            reader2.close();
-            reader3.close();
-            reader4.close();
-            reader5.close();
-            reader6.close();
-            reader7.close();
-            reader8.close();
-            reader9.close();
-            reader10.close();
+            if(flags.get(0)) reader0.close();
+            if(flags.get(1)) reader1.close();
+            if(flags.get(2)) reader2.close();
+            if(flags.get(3)) reader3.close();
+            if(flags.get(4)) reader4.close();
+            if(flags.get(5)) reader5.close();
+            if(flags.get(6)) reader6.close();
+            if(flags.get(7)) reader7.close();
+            if(flags.get(8)) reader8.close();
+            if(flags.get(9)) reader9.close();
+            if(flags.get(10)) reader10.close();
 
 
         } catch (FileNotFoundException e) {
@@ -196,7 +282,6 @@ public class MainWithSpecific {
         islandReader.close();
 
         String criterion = args[3];
-
 
         /*Set Flags
         0-woodYield
@@ -227,6 +312,7 @@ public class MainWithSpecific {
 
         Model m = new Model("Forest Management");
 
+        System.out.println("Reading Input Files");
         BufferedReader reader = new BufferedReader(new FileReader(fileDirectory + "/ugs_init.txt"));
 
         int nUgs = 0;
@@ -236,10 +322,11 @@ public class MainWithSpecific {
         UG[] nodes = new UG[nUgs];
         //if 0 ignore
         int minBorder = Integer.parseInt(args[2]);
+        UG.setupInternalIds(nodes, fileDirectory);
         if(minBorder <= 0)
-            UG.fillArray(nodes, fileDirectory, 0);
+            UG.fillArray(nodes, fileDirectory, 0, flags);
         else
-            UG.fillArray(nodes, fileDirectory, minBorder);
+            UG.fillArray(nodes, fileDirectory, minBorder, flags);
 
         for(int i = 0; i < nodes.length; i++){
             if(!islandUGs.contains(nodes[i].externalId)){
@@ -266,10 +353,10 @@ public class MainWithSpecific {
         IntVar[] crit10 = new IntVar[nUgs];
 
         giveDomains(m, ugs, fileDirectory, crit0, crit1, crit2, crit3, crit4, crit5, crit6,
-                crit7, crit8, crit9, crit10, nodes); // reads the ugs_init file and initializes each variable with its possible prescription values as domain
+                crit7, crit8, crit9, crit10, nodes, flags); // reads the ugs_init file and initializes each variable with its possible prescription values as domain
 
 
-        System.out.println("running");
+        System.out.println("Setting up Constraints");
 
 
         for(int ugIndex = 0; ugIndex < nodes.length; ugIndex++) { //loops through every UG
@@ -290,7 +377,7 @@ public class MainWithSpecific {
 
 
         for(int i = 0; i < nodes.length; i++){
-            if(nodes[i].valid) {
+            if(nodes[i].valid || nodes[i].noAdjacencies) {
                 IntVar prescIndex = m.intVar(0, 255);
 
                 m.element(ugs[i], nodes[i].presc, prescIndex).post();
@@ -379,7 +466,7 @@ public class MainWithSpecific {
 
             switch(singleFlag) {
                 case 0:
-                    m.setObjective(Model.MAXIMIZE, sum0);
+                    //m.setObjective(Model.MAXIMIZE, sum0);
                     break;
                 case 1:
                     m.setObjective(Model.MAXIMIZE, sum1);
@@ -416,21 +503,26 @@ public class MainWithSpecific {
 
             Solver s = m.getSolver();
 
-            if (s.solve()) {
+            System.out.println("Running Solver");
 
+            if (s.solve()) {
+                System.out.println("FOUND OPTIMAL SOLUTION!");
                 FileWriter outputPairs = new FileWriter("Results/outputPairsSingle.csv");
 
                 for (int i = 0; i < ugs.length; i++) {
-                    if (nodes[i].valid) {
+                    if (nodes[i].valid || nodes[i].noAdjacencies) {
                         pairCrits.write(ugs[i] + ", ");
 
                         for (int j = 0; j < flags.size(); j++) {
-                            if (flags.get(j))
-                                pairCrits.write(allTotals[j][i] +",");
+                            if (flags.get(j)) {
+                                pairCrits.write(allTotals[j][i] + ",");
+                            }
                         }
                         pairCrits.write("end\n");
 
                         outputPairs.write(nodes[i].externalId + "," + ugs[i].getValue() + "\n");
+                        //System.out.print(nodes[i].externalId + "," + ugs[i].getValue() + "\n");
+
                     }
                 }
                 outputPairs.close();
@@ -485,9 +577,11 @@ public class MainWithSpecific {
             nonPareto.write("end\n");
 
             FileWriter allSolutionPairs = new FileWriter("Results/allSolutionPairs.csv");
+            System.out.println("Running Solver");
 
             // optimization
             //(System.currentTimeMillis()-startTime)<18000000
+            //8 hours 28800000
             int l = 1;
             long startTime = System.currentTimeMillis(); //fetch starting time
             try{
@@ -508,7 +602,7 @@ public class MainWithSpecific {
                     allSolutionPairs.write("end\n");
 
                     for(int i = 0; i < nodes.length; i++){
-                        if(nodes[i].valid){
+                        if(nodes[i].valid || nodes[i].noAdjacencies){
                             allSolutionPairs.write(nodes[i].externalId+","+ugs[i].getValue()+"\n");
                         }
                     }
@@ -568,7 +662,7 @@ public class MainWithSpecific {
                 outputPairs.write("end\n");
 
                 for (int i = 0; i < ugs.length; i++) {
-                    if (nodes[i].valid) {
+                    if (nodes[i].valid || nodes[i].noAdjacencies) {
 
                         pairCrits.write("UG_"+i+"="+so.getIntVal(ugs[i])+", ");
 
