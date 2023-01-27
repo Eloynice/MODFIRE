@@ -109,6 +109,17 @@ public class VerifySolution {
 
     public static void main(String[] args) throws Exception {
 
+        File solutions = new File("work-1.vmt");
+        Scanner solutionsReader = new Scanner(solutions);
+
+        solutionsReader.nextLine();
+        solutionsReader.nextLine();
+        solutionsReader.nextLine();
+        while(solutionsReader.hasNextLine()){
+            System.out.println(solutionsReader.nextLine());
+        }
+
+
         ArrayList<Integer> islandUGs = new ArrayList<>();
         File island = new File("subregions/Full");
         Scanner islandReader = new Scanner(island);
@@ -133,8 +144,8 @@ public class VerifySolution {
             UG.fillVerificationArray(nodes, "res", minBorder);
 
         for(int i = 0; i < nodes.length; i++){
-            if(!islandUGs.contains(nodes[i].externalId)){
-                nodes[i].valid = false;
+            if(islandUGs.contains(nodes[i].externalId)){
+                nodes[i].valid = true;
             }
         }
 

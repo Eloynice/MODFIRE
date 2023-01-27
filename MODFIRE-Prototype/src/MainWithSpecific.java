@@ -116,7 +116,7 @@ public class MainWithSpecific {
 
 
 
-                if(nodes[index].valid || nodes[index].noAdjacencies) {
+                if(nodes[index].valid) {
                     String[] str_split = dataUg.split(",", 0);
 
                     String[] str_split0 = null;
@@ -276,7 +276,6 @@ public class MainWithSpecific {
         Scanner islandReader = new Scanner(island);
         while (islandReader.hasNextLine()) {
             islandUGs.add(Integer.parseInt(islandReader.nextLine()));
-
         }
 
         islandReader.close();
@@ -326,11 +325,11 @@ public class MainWithSpecific {
         if(minBorder <= 0)
             UG.fillArray(nodes, fileDirectory, 0, flags);
         else
-            UG.fillArray(nodes, fileDirectory, minBorder, flags);
+            UG.fillArray(nodes, fileDirectory, 50, flags);
 
         for(int i = 0; i < nodes.length; i++){
-            if(!islandUGs.contains(nodes[i].externalId)){
-                nodes[i].valid = false;
+            if(islandUGs.contains(nodes[i].externalId)){
+                nodes[i].valid = true;
             }
         }
 
@@ -362,37 +361,41 @@ public class MainWithSpecific {
         for(int ugIndex = 0; ugIndex < nodes.length; ugIndex++) { //loops through every UG
             //the propagator takes as parameters the index of the UG we are starting out from
             //the nodes with all the info, the constraint variable array and the area limit
-            if(nodes[ugIndex].valid) {
+            if(nodes[ugIndex].valid && !nodes[ugIndex].noAdjacencies) {
                 new Constraint("Area Limit Constraint", new CustomPropagator2(ugIndex, nodes, ugs, areaLimit)).post();
             }
         }
 
-
-        int valids = 0;
         for(int i = 0; i < nodes.length; i++){
             if(nodes[i].valid) {
-                valids++;
-            }
-        }
 
-
-        for(int i = 0; i < nodes.length; i++){
-            if(nodes[i].valid || nodes[i].noAdjacencies) {
-                IntVar prescIndex = m.intVar(0, 255);
+                IntVar prescIndex = m.intVar(0, nodes[i].presc.length);
 
                 m.element(ugs[i], nodes[i].presc, prescIndex).post();
 
-                m.element(crit0[i], nodes[i].crit0, prescIndex).post();
-                m.element(crit1[i], nodes[i].crit1, prescIndex).post();
-                m.element(crit2[i], nodes[i].crit2, prescIndex).post();
-                m.element(crit3[i], nodes[i].crit3, prescIndex).post();
-                m.element(crit4[i], nodes[i].crit4, prescIndex).post();
-                m.element(crit5[i], nodes[i].crit5, prescIndex).post();
-                m.element(crit6[i], nodes[i].crit6, prescIndex).post();
-                m.element(crit7[i], nodes[i].crit7, prescIndex).post();
-                m.element(crit8[i], nodes[i].crit8, prescIndex).post();
-                m.element(crit9[i], nodes[i].crit9, prescIndex).post();
-                m.element(crit10[i], nodes[i].crit10, prescIndex).post();
+                if(flags.get(0))    m.element(crit0[i], nodes[i].crit0, prescIndex).post();
+                else    m.arithm(crit0[i], "=", 0).post();
+                if(flags.get(1))    m.element(crit1[i], nodes[i].crit1, prescIndex).post();
+                else    m.arithm(crit1[i], "=", 0).post();
+                if(flags.get(2))    m.element(crit2[i], nodes[i].crit2, prescIndex).post();
+                else    m.arithm(crit2[i], "=", 0).post();
+                if(flags.get(3))    m.element(crit3[i], nodes[i].crit3, prescIndex).post();
+                else    m.arithm(crit3[i], "=",0).post();
+                if(flags.get(4))    m.element(crit4[i], nodes[i].crit4, prescIndex).post();
+                else    m.arithm(crit4[i], "=",0).post();
+                if(flags.get(5))    m.element(crit5[i], nodes[i].crit5, prescIndex).post();
+                else    m.arithm(crit5[i], "=",0).post();
+                if(flags.get(6))    m.element(crit6[i], nodes[i].crit6, prescIndex).post();
+                else    m.arithm(crit6[i], "=",0).post();
+                if(flags.get(7))    m.element(crit7[i], nodes[i].crit7, prescIndex).post();
+                else    m.arithm(crit7[i], "=",0).post();
+                if(flags.get(8))    m.element(crit8[i], nodes[i].crit8, prescIndex).post();
+                else    m.arithm(crit8[i], "=",0).post();
+                if(flags.get(9))    m.element(crit9[i], nodes[i].crit9, prescIndex).post();
+                else    m.arithm(crit9[i], "=",0).post();
+                if(flags.get(10))   m.element(crit10[i], nodes[i].crit10, prescIndex).post();
+                else    m.arithm(crit10[i], "=",0).post();
+
 
             }
 
@@ -466,7 +469,7 @@ public class MainWithSpecific {
 
             switch(singleFlag) {
                 case 0:
-                    //m.setObjective(Model.MAXIMIZE, sum0);
+                    m.setObjective(Model.MAXIMIZE, sum0);
                     break;
                 case 1:
                     m.setObjective(Model.MAXIMIZE, sum1);
@@ -510,7 +513,7 @@ public class MainWithSpecific {
                 FileWriter outputPairs = new FileWriter("Results/outputPairsSingle.csv");
 
                 for (int i = 0; i < ugs.length; i++) {
-                    if (nodes[i].valid || nodes[i].noAdjacencies) {
+                    if (nodes[i].valid) {
                         pairCrits.write(ugs[i] + ", ");
 
                         for (int j = 0; j < flags.size(); j++) {
@@ -521,8 +524,6 @@ public class MainWithSpecific {
                         pairCrits.write("end\n");
 
                         outputPairs.write(nodes[i].externalId + "," + ugs[i].getValue() + "\n");
-                        //System.out.print(nodes[i].externalId + "," + ugs[i].getValue() + "\n");
-
                     }
                 }
                 outputPairs.close();
@@ -581,13 +582,14 @@ public class MainWithSpecific {
 
             // optimization
             //(System.currentTimeMillis()-startTime)<18000000
-            //8 hours 28800000
+            //8 hours  28800000
+            //13 hours 46800000
+
             int l = 1;
             long startTime = System.currentTimeMillis(); //fetch starting time
             try{
                 while(solver.solve() & (System.currentTimeMillis()-startTime)<28800000)
                 {
-                    //System.out.println(l);
                     for (int i = 0; i < flags.size(); i++) {
                         if(flags.get(i))
                             nonPareto.write(allSums[i].getValue()+",");
@@ -602,24 +604,11 @@ public class MainWithSpecific {
                     allSolutionPairs.write("end\n");
 
                     for(int i = 0; i < nodes.length; i++){
-                        if(nodes[i].valid || nodes[i].noAdjacencies){
+                        if(nodes[i].valid){
                             allSolutionPairs.write(nodes[i].externalId+","+ugs[i].getValue()+"\n");
                         }
                     }
                     l++;
-
-                    /*for(int i = 0; i < nodes.length; i++){
-                        if(nodes[i].valid){
-
-                            pairCrits.write(ugs[i] + ", ");
-
-                            for (int j = 0; j < flags.size(); j++) {
-                                if(flags.get(j))
-                                    pairCrits.write(varNames[j] +":"+ allTotals[j][i].getValue()+",");
-                            }
-                            pairCrits.write("end\n");
-                        }
-                    }*/
                 }
             }
             catch (OutOfMemoryError e){
@@ -662,7 +651,7 @@ public class MainWithSpecific {
                 outputPairs.write("end\n");
 
                 for (int i = 0; i < ugs.length; i++) {
-                    if (nodes[i].valid || nodes[i].noAdjacencies) {
+                    if (nodes[i].valid) {
 
                         pairCrits.write("UG_"+i+"="+so.getIntVal(ugs[i])+", ");
 

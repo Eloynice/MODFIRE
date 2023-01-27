@@ -26,7 +26,7 @@ public class UG {
     int[] crit10;
 
     int time;
-    boolean valid;
+    boolean valid = false;
     boolean treated;
     boolean treatedThisYear = false;
     boolean noAdjacencies = false;
@@ -197,9 +197,7 @@ public class UG {
 
             while (readerAdj.hasNextLine()) {
                 UG toInsert = array[index];
-                toInsert.valid = true;
                 toInsert.treated = false;
-
 
                 toInsert.adj = adjacencyReader(index, readerAdj, readerBorders, minBorder, array);
 
@@ -254,7 +252,6 @@ public class UG {
                 else toInsert.crit10 = zeroArray;
 
                 if(toInsert.adj[0] == -1){
-                    toInsert.valid = false;
                     toInsert.noAdjacencies = true; //If unit has no adjacencies it's still used but not in the main loop
                 }
 
@@ -282,8 +279,6 @@ public class UG {
             if(flags.get(8)) reader8.close();
             if(flags.get(9)) reader9.close();
             if(flags.get(10)) reader10.close();
-
-
 
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -342,8 +337,6 @@ public class UG {
                 }
 
                 if(toInsert.adj[0] == -1){
-                    toInsert.valid = false;
-
                     toInsert.noAdjacencies = true; //If unit has no adjacencies it's still used but not in the main loop
                 }
 

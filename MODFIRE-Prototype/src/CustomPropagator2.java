@@ -56,8 +56,8 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
     //recursive function that fills an array list with the continuous adjacent UGs that have CUTS.
     public int gPropagate(int first, int ugIndex, int year, int sum) throws Exception{
         if(ugIndex == first){  //if the UG we are on isn't the UG we started out from
-            if(nodes[ugIndex].valid && vars[ugIndex].isInstantiated() && nodes[ugIndex].time < year) { //and if this UG is instantiaded and hasn't been gladed yet
-                nodes[ugIndex].time = year;
+            if(nodes[ugIndex].valid && vars[ugIndex].isInstantiated() && !nodes[ugIndex].treatedThisYear) { //and if this UG is instantiaded and hasn't been gladed yet
+                nodes[ugIndex].treatedThisYear = true;
                 sum = sum + (int)nodes[ugIndex].area;
 
                 if(sum > b){
@@ -67,23 +67,24 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
                 for (int rec = 0; rec < nodes[ugIndex].adj.length; rec++) { //and check its adjacencies
 
                     // to access the adjacent ugs we go through the ADJ array in current UG's node.
-                    if(nodes[nodes[ugIndex].adj[rec]].valid &&  vars[nodes[ugIndex].adj[rec]].isInstantiated() && nodes[nodes[ugIndex].adj[rec]].time < year) {
+                    if(nodes[nodes[ugIndex].adj[rec]].valid &&  vars[nodes[ugIndex].adj[rec]].isInstantiated() && !nodes[nodes[ugIndex].adj[rec]].treatedThisYear) {
                         //we only do this if the adjacent UG's haven't been gladed and if they've been instantiated.
                         sum = gPropagate(first, nodes[ugIndex].adj[rec], year, sum);
+                        nodes[nodes[ugIndex].adj[rec]].treatedThisYear = true;
                     }
                 }
             }
         }
         else {
-            if (nodes[ugIndex].valid && vars[ugIndex].isInstantiated() && nodes[ugIndex].time < year) { //check if the UG hasn't been gladed and if it's already instantiated
-
+            if (nodes[ugIndex].valid && vars[ugIndex].isInstantiated() && !nodes[ugIndex].treatedThisYear) { //check if the UG hasn't been gladed and if it's already instantiated
+                nodes[ugIndex].treatedThisYear = true;
                 int ugPresc = vars[ugIndex].getValue(); //we get the prescription value of the current UG
 
                 ArrayList<Integer> hasCut = hasCutInYear(ugIndex, year); //we get the list of prescriptions of this UG where there is a CUT in this year
 
                 if(hasCut.contains(ugPresc)){ //if the List with all those prescriptions has the prescription the UG has been instantiated with.
 
-                    nodes[ugIndex].time = year;
+                    //nodes[ugIndex].time = year;
 
                     sum = sum + (int)nodes[ugIndex].area;
 
@@ -93,8 +94,10 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
 
                     for (int rec = 0; rec < nodes[ugIndex].adj.length; rec++) { //and check its adjacencies
 
-                        if(nodes[nodes[ugIndex].adj[rec]].valid && vars[nodes[ugIndex].adj[rec]].isInstantiated() && nodes[nodes[ugIndex].adj[rec]].time < year) {
+                        if(nodes[nodes[ugIndex].adj[rec]].valid && vars[nodes[ugIndex].adj[rec]].isInstantiated() &&
+                                !nodes[nodes[ugIndex].adj[rec]].treatedThisYear) {
                             sum = gPropagate(first, nodes[ugIndex].adj[rec], year, sum);
+                            nodes[nodes[ugIndex].adj[rec]].treatedThisYear = true;
                         }
                     }
                 }
@@ -136,11 +139,11 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
                 //that means that if the UG take this PRESC value then it has cuts,
                 // if this value was 0 that means the UG with this presc has no cuts
 
-                for(int i = 0; i < nodes.length; i++)
-                    nodes[i].time = 0;
-
 
                 for (int p = 0; p < nodes[ugIndex].years[prescIndex].length; p++) { //for every year that our UG has cuts
+
+                    for(int i = 0; i < nodes.length; i++)
+                        nodes[i].treatedThisYear = false;
 
                     int year = nodes[ugIndex].years[prescIndex][p]; //current year
 
@@ -160,8 +163,8 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
     // same as gPropagate but without the "isInstatiated" checks
     public int g(int first, int ugIndex, int year, int sum) throws Exception{
         if(ugIndex == first){
-            if(nodes[ugIndex].valid && nodes[ugIndex].time < year) {
-                nodes[ugIndex].time = year;
+            if(nodes[ugIndex].valid && !nodes[ugIndex].treatedThisYear) {
+                nodes[ugIndex].treatedThisYear = true;
 
                 sum = sum + (int)nodes[ugIndex].area;
 
@@ -172,21 +175,24 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
                 for (int rec = 0; rec < nodes[ugIndex].adj.length; rec++) {
 
 
-                    if(nodes[nodes[ugIndex].adj[rec]].valid && nodes[nodes[ugIndex].adj[rec]].time < year) {
+                    if(nodes[nodes[ugIndex].adj[rec]].valid && !nodes[nodes[ugIndex].adj[rec]].treatedThisYear) {
                         sum = g(first, nodes[ugIndex].adj[rec], year, sum);
+                        nodes[nodes[ugIndex].adj[rec]].treatedThisYear = true;
+
                     }
                 }
             }
         }
         else {
-            if (nodes[ugIndex].valid && nodes[ugIndex].time < year) {
+            if (nodes[ugIndex].valid && !nodes[ugIndex].treatedThisYear) {
+                nodes[ugIndex].treatedThisYear = true;
 
                 int ugPresc = vars[ugIndex].getValue();
 
                 ArrayList<Integer> hasCut = hasCutInYear(ugIndex, year);
 
                 if(hasCut.contains(ugPresc)){
-                    nodes[ugIndex].time = year;
+                    //nodes[ugIndex].time = year;
 
                     sum = sum + (int)nodes[ugIndex].area;
 
@@ -196,8 +202,9 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
 
                     for (int rec = 0; rec < nodes[ugIndex].adj.length; rec++) {
 
-                        if(nodes[nodes[ugIndex].adj[rec]].valid && nodes[nodes[ugIndex].adj[rec]].time < year) {
+                        if(nodes[nodes[ugIndex].adj[rec]].valid && !nodes[nodes[ugIndex].adj[rec]].treatedThisYear) {
                             sum = g(first, nodes[ugIndex].adj[rec], year, sum);
+                            nodes[nodes[ugIndex].adj[rec]].treatedThisYear = true;
                         }
                     }
                 }
@@ -221,14 +228,12 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
     @Override
     public ESat isEntailed() { //When it gets here everything is already instantiated, but it doesn't backtrack
 
-        //this works basically the same way as the propagate function but it doesn't check for instantiations
+        //this works basically the same way as the propagate function, but it doesn't check for instantiations
         //and returns ESat.FALSE instead of fails()
 
         int ugPresc = vars[ugIndex].getValue();
 
         int prescIndex = 0;
-
-        ArrayList<Integer> SUMS = new ArrayList<>(); //for testing purposes
 
         for (int i = 0; i < nodes[ugIndex].presc.length; i++) {
             if (nodes[ugIndex].presc[i] == ugPresc) {
@@ -238,33 +243,25 @@ public class CustomPropagator2 extends org.chocosolver.solver.constraints.Propag
 
         if (nodes[ugIndex].years[prescIndex][0] > 0) { //if this UG with this PREC has cuts
 
-            for(int i = 0; i < nodes.length; i++)
-                nodes[i].time = 0;
-
             for (int p = 0; p < nodes[ugIndex].years[prescIndex].length; p++) { //for every year that our UG has cuts
+
+                for(int i = 0; i < nodes.length; i++)
+                    nodes[i].treatedThisYear = false;
 
                 int year = nodes[ugIndex].years[prescIndex][p]; //current year
                 try {
                     int sum = glade(ugIndex, year); //we get the sum
-                    SUMS.add(sum);
+                    if(sum > 50){
+                        return ESat.FALSE;
+                    }
                 } catch (Exception e) {
                     return ESat.FALSE;
                 }
 
-                //SUMS.add(sum);
             }
         }
 
-        int max = 0;
-        for(int i = 0; i < SUMS.size(); i++){
-            if(SUMS.get(i) > max) {
-                //System.out.println("UG_"+(ugIndex+1)+" PR_"+nodes[ugIndex].presc[prescIndex]+" Y_"+nodes[ugIndex].years[prescIndex][i]+" SUM_"+SUMS.get(i));
-                max = SUMS.get(i);
-            }
-        }
-        //System.out.println(max);
 
-        //woodYield[ugIndex] = model.intVar((int)nodes[ugIndex].wood_total[prescIndex]);
         return ESat.TRUE;
     }
 }

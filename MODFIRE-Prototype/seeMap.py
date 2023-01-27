@@ -112,6 +112,25 @@ for line in file:
 
 
 
+v1 = [969,970,971, 1505]
+#969,970,971, 1505
+for i in range(0, len(v1)):
+    xx = []
+    yy = []
+    for v in vert4MU[str(v1[i])]:
+        xx.append(v[0])
+        yy.append(v[1])
+    plt.fill(xx, yy, facecolor='cyan', edgecolor='black', linewidth=1)
+
+v2 = [1447]
+for i in range(0, len(v2)):
+    xx = []
+    yy = []
+    for v in vert4MU[str(v2[i])]:
+        xx.append(v[0])
+        yy.append(v[1])
+    plt.fill(xx, yy, facecolor='blue', edgecolor='black', linewidth=1)
+
 
 plt.show()
 

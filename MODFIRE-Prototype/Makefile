@@ -32,7 +32,7 @@ all: make
 #10-Sbiom
 
 make: 	
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single Paredes 0
+	java $(JFLAGS) MainWithSpecific 50 res 50 Multi PaivaIslands 0 1 2
 
 paredesSingle:	
 	java $(JFLAGS) MainWithSpecific 50 res 50 Single Paredes 0
