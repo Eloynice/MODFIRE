@@ -107,17 +107,73 @@ public class VerifySolution {
         return g(ugIndex, ugIndex, period, 0, nodes, prescIndexes);
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void writeSolution(String reg, UG[] nodes, int solIndex, int regLen, FileWriter outputFile) throws IOException {
+        int s = solIndex*regLen + 1;
+        int e = s + regLen-1;
+        String pairLine = null;
 
-        File solutions = new File("work-1.vmt");
-        Scanner solutionsReader = new Scanner(solutions);
 
-        solutionsReader.nextLine();
-        solutionsReader.nextLine();
-        solutionsReader.nextLine();
-        while(solutionsReader.hasNextLine()){
-            System.out.println(solutionsReader.nextLine());
+
+        BufferedReader readerPar = new BufferedReader(new FileReader("RegionSolutions/"+reg));
+        for (int i = 0; i < s; i++) {
+            readerPar.readLine();
         }
+
+        for(int i = s; i < e; i++ ) {
+            pairLine = readerPar.readLine();
+            String P = pairLine.substring(0, 1);
+            if(P.compareToIgnoreCase("P") == 0){
+                continue;
+            }
+            else{
+                int externalId = Integer.parseInt(pairLine.split(",")[0]);
+                int presc = Integer.parseInt(pairLine.split(",")[1]);
+                outputFile.write(externalId+","+presc+"\n");
+
+            }
+
+        }
+        readerPar.close();
+
+    }
+
+    public static void readRegionFile(String reg, UG[] nodes, int solIndex, int regLen, int[] prescIndexes, int[] intExt) throws IOException {
+
+        int s = solIndex*regLen + 1;
+        int e = s + regLen-1;
+        String pairLine = null;
+
+
+        BufferedReader readerPar = new BufferedReader(new FileReader("RegionSolutions/"+reg));
+        for (int i = 0; i < s; i++) {
+            readerPar.readLine();
+        }
+
+        for(int i = s; i < e; i++ ) {
+            pairLine = readerPar.readLine();
+            String P = pairLine.substring(0, 1);
+            if(P.compareToIgnoreCase("P") == 0){
+                continue;
+            }
+            else{
+                int externalId = Integer.parseInt(pairLine.split(",")[0]);
+                int presc = Integer.parseInt(pairLine.split(",")[1]);
+
+                int internalId = returnInternal(nodes, externalId);
+                int prescIndex = indexOfPresc(nodes, internalId, presc);
+
+                nodes[internalId].valid = true;
+
+                intExt[internalId] = externalId;
+                prescIndexes[internalId] = prescIndex;
+
+            }
+
+        }
+        readerPar.close();
+    }
+
+    public static void main(String[] args) throws Exception {
 
 
         ArrayList<Integer> islandUGs = new ArrayList<>();
@@ -145,64 +201,138 @@ public class VerifySolution {
 
         for(int i = 0; i < nodes.length; i++){
             if(islandUGs.contains(nodes[i].externalId)){
-                nodes[i].valid = true;
+                //nodes[i].valid = true;
+                continue;
             }
         }
 
-        File solFile = new File("fullSolution");
-        Scanner solReader = new Scanner(solFile);
+        int solutionNumber = 1;
 
-        int[] prescIndexes = new int[nUgs];
-        int[] intExt = new int[nUgs];
+        File solutions = new File("work-2.vmt");
+        Scanner solutionsReader = new Scanner(solutions);
 
-        while (solReader.hasNextLine()) {
-            String line = solReader.nextLine();
-            int externalId = Integer.parseInt(line.split(",")[0]);
-            int presc = Integer.parseInt(line.split(",")[1]);
-
-            int internalId = returnInternal(nodes, externalId);
-            int prescIndex = indexOfPresc(nodes, internalId, presc);
-
-            intExt[internalId] = externalId;
-            prescIndexes[internalId] = prescIndex;
-
-        }
+        solutionsReader.nextLine();
+        solutionsReader.nextLine();
+        solutionsReader.nextLine();
+        while(solutionsReader.hasNextLine()){ //for each solution in that file
+            currentViolation.clear();
+            violationGraphs.clear();
+            sumViolations.clear();
+            yearViolations.clear();
 
 
-        int noUse = 0;
-        for (int internalId = 0; internalId < nodes.length; internalId++) {
-            if(nodes[internalId].noAdjacencies && nodes[internalId].valid) {
-                noUse++;
-            }
-            else if(nodes[internalId].valid){
+            int[] prescIndexes = new int[nUgs];
+            int[] intExt = new int[nUgs];
 
-                for (int i = 0; i < nodes[internalId].years[prescIndexes[internalId]].length; i++) {
-                    int currentYear = nodes[internalId].years[prescIndexes[internalId]][i];
 
-                    if (currentYear == -1) {
-                        noUse++;
-                    }
-                    else {
-                        int sum = glade(internalId, currentYear, nodes, prescIndexes);
-                        if(sum > 50){
-                            insertCurrentViolation(sum, currentYear);
+            String line = solutionsReader.nextLine();
+            String[] arr = line.split("\t");
+            String SolName = arr[0];
+            float[] Criteria = {Float.parseFloat(arr[1]), Float.parseFloat(arr[2]), Float.parseFloat(arr[3])};
+
+            int parSol = Integer.parseInt(arr[4]);
+            int penSol = Integer.parseInt(arr[5]);
+            int paiwSol = Integer.parseInt(arr[6]);
+            int paieSol = Integer.parseInt(arr[7]);
+            int paiiSol = Integer.parseInt(arr[8]);
+
+            int lenPar = 193+1; //real 193
+            int lenPen = 526+1; //real 527
+            int lenPw = 482+1; // real 487
+            int lenPe = 86+1; //real 86
+            int lenPi = 109+1; //real 113
+
+            readRegionFile("Par-ParetoSolutions.csv", nodes, parSol, lenPar, prescIndexes, intExt);
+            readRegionFile("Pen-ParetoSolutions.csv", nodes, penSol, lenPen, prescIndexes, intExt);
+            readRegionFile("PaivaWest-ParetoSolutions.csv", nodes, paiwSol, lenPw, prescIndexes, intExt);
+            readRegionFile("PaivaEast-ParetoSolutions.csv", nodes, paieSol, lenPe, prescIndexes, intExt);
+            readRegionFile("PaivaIslands-ParetoSolutions.csv", nodes, paiiSol, lenPi, prescIndexes, intExt);
+
+
+            int noUse = 0;
+            for (int internalId = 0; internalId < nodes.length; internalId++) {
+                if(nodes[internalId].noAdjacencies && nodes[internalId].valid) {
+                    noUse++;
+                }
+                else if(nodes[internalId].valid){
+
+                    for (int i = 0; i < nodes[internalId].years[prescIndexes[internalId]].length; i++) {
+                        int currentYear = nodes[internalId].years[prescIndexes[internalId]][i];
+
+                        if (currentYear == -1) {
+                            noUse++;
                         }
-                        currentViolation.clear();
+                        else {
+                            int sum = glade(internalId, currentYear, nodes, prescIndexes);
+                            if(sum > 50){
+                                insertCurrentViolation(sum, currentYear);
+                            }
+                            currentViolation.clear();
 
-                        for (UG node : nodes) node.treatedThisYear = false;
-
+                            for (UG node : nodes) node.treatedThisYear = false;
+                        }
                     }
                 }
             }
-        }
-        if (violationGraphs.isEmpty())
-            System.out.println("There were no limit violations in this solution");
-        else{
-            System.out.println("There were "+violationGraphs.size()+" violations in this solution");
+            if (violationGraphs.isEmpty())
+                System.out.println(solutionNumber+"- There were no limit violations in solution "+SolName);
+            else{
+                System.out.println(solutionNumber+"- There were "+violationGraphs.size()+" violations in solution "+SolName);
 
-            for(int i = 0; i < violationGraphs.size(); i++){
-                System.out.println(sumViolations.get(i)+" in year "+yearViolations.get(i)+ " containing MUs: "+violationGraphs.get(i).toString());
+                for(int i = 0; i < violationGraphs.size(); i++){
+                    System.out.println(sumViolations.get(i)+"ha in year "+yearViolations.get(i)+ " containing MUs: "+violationGraphs.get(i).toString());
+                }
             }
+            System.out.println("-------------------------------------------------");
+            solutionNumber++;
         }
+        System.out.println("-------------------------------------------------");
+        solutionsReader.close();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter number of solution to output on VerifiedSolution.csv");
+        int in = input.nextInt();
+        solutionsReader = new Scanner(solutions);
+
+        solutionsReader.nextLine();
+        solutionsReader.nextLine();
+        solutionsReader.nextLine();
+        solutionNumber = 1;
+
+        while(solutionsReader.hasNextLine()) { //for each solution in that file
+
+            solutionsReader.nextLine();
+            if(solutionNumber==in){
+                int[] prescIndexes = new int[nUgs];
+                int[] intExt = new int[nUgs];
+
+
+                String line = solutionsReader.nextLine();
+                String[] arr = line.split("\t");
+
+                int parSol = Integer.parseInt(arr[4]);
+                int penSol = Integer.parseInt(arr[5]);
+                int paiwSol = Integer.parseInt(arr[6]);
+                int paieSol = Integer.parseInt(arr[7]);
+                int paiiSol = Integer.parseInt(arr[8]);
+
+                int lenPar = 193+1; //real 193
+                int lenPen = 526+1; //real 527
+                int lenPw = 482+1; // real 487
+                int lenPe = 86+1; //real 86
+                int lenPi = 109+1; //real 113
+
+                FileWriter  outputFile = new FileWriter ("VerifiedSolution.csv");
+
+                writeSolution("Par-ParetoSolutions.csv", nodes, parSol, lenPar,outputFile);
+                writeSolution("Pen-ParetoSolutions.csv", nodes, penSol, lenPen,outputFile);
+                writeSolution("PaivaWest-ParetoSolutions.csv", nodes, paiwSol, lenPw,outputFile);
+                writeSolution("PaivaEast-ParetoSolutions.csv", nodes, paieSol, lenPe,outputFile);
+                writeSolution("PaivaIslands-ParetoSolutions.csv", nodes, paiiSol, lenPi,outputFile);
+                outputFile.close();
+            }
+            solutionNumber++;
+        }
+        solutionsReader.close();
+        System.out.println("------FINISHED------");
     }
 }

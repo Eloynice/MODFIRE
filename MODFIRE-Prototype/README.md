@@ -78,15 +78,15 @@ So they have the following Internal IDs
 ------------------------
 
 ## adj_init.txt 
-### This file sets up the adjacencies of each MU each line should list the Internal IDs of the MUs adjacent to the respective MU separated by a comma. If the MU has no adjacent MUs the line should just have a -1
+### This file sets up the adjacencies of each MU each line should list the External IDs of the MUs adjacent to the respective MU separated by a comma. If the MU has no adjacent MUs the line should just have a -1
 
 -----------------Example:
 
-1,2
+201,333
 
-0
+30
 
-0
+30
 
 -1
 
@@ -94,19 +94,6 @@ So they have the following Internal IDs
 
 So this forest might look like this:
 
-Internal Ids:
-
-|2|
-
- |
-
-|0|  |3|
-
- |
- 
-|1|
-
-External Ids:
 
 |333|
  

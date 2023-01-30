@@ -313,7 +313,6 @@ public class UG {
 
             while (readerAdj.hasNextLine()) {
                 UG toInsert = array[index];
-                toInsert.valid = true;
                 toInsert.treated = false;
                 toInsert.time = 0;
 
