@@ -4,7 +4,13 @@ fy= open("Maps/MapInputFile.txt", "w+")
 
 con = sqlite3.connect("database_modfire.db")
 cur = con.cursor()
-Filemame = "Results/outputPairsSingle.csv"
+
+print('Enter name of file in results folder (single solution): ')
+print('Example: Paredes-SingleSolution.csv')
+
+x = input()
+
+Filemame = "Results/"+str(x)
 f=open(Filemame,"r")
 lines=f.readlines()
 result=[]

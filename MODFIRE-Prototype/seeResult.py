@@ -2,8 +2,14 @@ import csv, re, sqlite3
 
 con = sqlite3.connect("database_modfire.db")
 cur = con.cursor()
-Filemame = "Results/outputPairsMulti.csv"
+print('Enter name of file in results folder (multiple solutions): ')
+print('Example: Penafiel-ParetoSolutions.csv')
+
+x = input()
+
+Filemame = "Results/"+str(x)
 f=open(Filemame,"r")
+
 lines=f.readlines()
 result=[]
 

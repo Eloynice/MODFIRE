@@ -30,8 +30,8 @@ public class UG {
     boolean treated;
     boolean treatedThisYear = false;
     boolean noAdjacencies = false;
-    int lasYearOfViolation = 0;
-    int lastYearTreated = 0;
+    //int lasYearOfViolation = 0;
+    //int lastYearTreated = 0;
 
     static public int[] returnInsertable(Scanner myReader){
         String data = myReader.nextLine();

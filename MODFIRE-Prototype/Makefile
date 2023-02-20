@@ -8,7 +8,7 @@ JFLAGS = -cp $(CHOCO):$(CLASSES)
 all: make
 
 #Multi runs for 8 hours
-#MainWithSpecific [AREALIMIT] res [MINIMUM BORDER] [TYPE(MULTI, SINGLE)] [REGION FILE] [CRITERIA FLAGS]
+#MainFloat [AREALIMIT] res [MINIMUM BORDER] [TYPE(MULTI, SINGLE)] [REGION FILE] [CRITERIA FLAGS]
 
 #AREALIMIT is the maximum ammount of forest area that can be contiguously harvested in a single year
 #res is the folder with the input files
@@ -32,43 +32,63 @@ all: make
 #10-Sbiom
 
 make: 	
-	java $(JFLAGS) MainWithSpecific 50 res 50 Multi PaivaIslands 0 1 2
+	java $(JFLAGS) MainFloat 50 res 25 Multi Full 0 1 2
+
+	
+sequence:
+	java $(JFLAGS) MainFloat 50 res 1 Multi PaivaIslands 0 1 2
+	java $(JFLAGS) MainFloat 50 res 1 Multi ParPen 0 1 2
+	java $(JFLAGS) MainFloat 50 res 1 Multi PaivaWest 0 1 2
+	java $(JFLAGS) MainFloat 50 res 1 Multi PaivaEast 0 1 2
+	
+contactzone:
+	java $(JFLAGS) MainFloat 50 res 1 Single PaivaWestEastContact 0 1 2
+	
+locks:
+	java $(JFLAGS) MainWithSolutionFile 50 res 1 Multi PaivaEast WestEastContactSolution 0 1 2
+	java $(JFLAGS) MainWithSolutionFile 50 res 1 Multi PaivaWest WestEastContactSolution 0 1 2
+	
+verify: 
+	java $(JFLAGS) VerifySolutionsFloat 50 res 1 work-1.vmt
+	
+verifySingle:
+	java $(JFLAGS) VerifySingleSolutionFloat 50 res 1 1mWithLock17141.vmt
 
 paredesSingle:	
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single Paredes 0
+	java $(JFLAGS) MainFloat 50 res 50 Single Paredes 0 1 2
 
 paredesMulti:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Multi Paredes 0 1 2
+	java $(JFLAGS) MainFloat 50 res 50 Multi Paredes 0 1 2
 	
 penafielSingle:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single Penafiel 0
+	java $(JFLAGS) MainFloat 50 res 50 Single Penafiel 0 1 2
 
 penafielMulti:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Multi Penafiel 0 1
+	java $(JFLAGS) MainFloat 50 res 50 Multi Penafiel 0 1 2
 	
 paivaWSingle:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single PaivaWest 0
+	java $(JFLAGS) MainFloat 50 res 50 Single PaivaWest 0 1 2
 	
 paivaWMulti:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Multi PaivaWest 0 1
+	java $(JFLAGS) MainFloat 50 res 50 Multi PaivaWest 0 1 2
 
 paivaESingle:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single PaivaEast 0
+	java $(JFLAGS) MainFloat 50 res 50 Single PaivaEast 0 1 2
 	
 paivaEMulti:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Multi PaivaEast 0 1
+	java $(JFLAGS) MainFloat 50 res 50 Multi PaivaEast 0 1 2
 	
 paivaISingle:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single PaivaIslands 0
+	java $(JFLAGS) MainFloat 50 res 50 Single PaivaIslands 0 1 2
 	
 paivaIMulti:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Multi PaivaIslands 0 1
+	java $(JFLAGS) MainFloat 50 res 50 Multi PaivaIslands 0 1 2
 
 parpenSingle:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single ParedesPenafiel 0
+	java $(JFLAGS) MainFloat 50 res 50 Single ParPen 0 1 2
 
 parpenMulti:
-	java $(JFLAGS) MainWithSpecific 50 res 50 Single ParedesPenafiel 0 1
+	java $(JFLAGS) MainFloat 50 res 50 Single ParPen 0 1 2
 	
 time:
-	java $(JFLAGS) MainTime 50 res 50 28800000 Paredes 0 1
+	java $(JFLAGS) MainTime 50 res 50 28800000 Paredes 0 1 2

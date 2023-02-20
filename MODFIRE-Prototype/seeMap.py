@@ -58,6 +58,7 @@ plt.plot([-25000, -25010], [165000, 165010], lw=15, c='lime',  label='Penafiel')
 plt.plot([-25000, -25010], [165000, 165010], lw=15, c='fuchsia',  label='PaivaWest')
 plt.plot([-25000, -25010], [165000, 165010], lw=15, c='yellow',  label='PaivaIslands')
 plt.plot([-25000, -25010], [165000, 165010], lw=15, c='red',  label='PaivaEast')
+plt.plot([-25000, -25010], [165000, 165010], lw=10, c='cyan', label='ContactZones')
 plt.plot([-25000, -25010], [165000, 165010], lw=17, c='lightgray')
 plt.legend() 
 
@@ -112,7 +113,7 @@ for line in file:
 
 
 
-v1 = [969,970,971, 1505]
+v1 = [1113, 1118, 1119, 1120, 1121,1264]
 #969,970,971, 1505
 for i in range(0, len(v1)):
     xx = []
@@ -122,14 +123,14 @@ for i in range(0, len(v1)):
         yy.append(v[1])
     plt.fill(xx, yy, facecolor='cyan', edgecolor='black', linewidth=1)
 
-v2 = [1447]
+v2 = [1107, 1108, 1110, 1111,1117,1431,1432]
 for i in range(0, len(v2)):
     xx = []
     yy = []
     for v in vert4MU[str(v2[i])]:
         xx.append(v[0])
         yy.append(v[1])
-    plt.fill(xx, yy, facecolor='blue', edgecolor='black', linewidth=1)
+    plt.fill(xx, yy, facecolor='cyan', edgecolor='black', linewidth=1)
 
 
 plt.show()

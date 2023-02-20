@@ -182,12 +182,12 @@ The program is run through the make file and requires Java 11.
 
 Open up the Makefile in this folder and modify the parameters of the "make" label, then run the "make" command in the terminal.
 
-## MainWithSpecific
-The MainWithSpecific command is what should be run and its parameters can be changed in the following manner.
+## MainFloat
+The MainFloat command is what should be run and its parameters can be changed in the following manner.
 
 The examples shown are related to the Vale de Sousa forest which was used in the MODFIRE project.
 
-## MainWithSpecific parameters:
+## MainFloat parameters:
 1st- Maximum Area Limit (50)
 
 2nd- Directory with data about forest (res)
@@ -223,12 +223,12 @@ The examples shown are related to the Vale de Sousa forest which was used in the
 
 10-Criteria10(Sbiom)
 
-#### Example to optimize Wood Yield and Soil Loss in Paredes-> MainWithSpecific 50 res 50 Multi Paredes 0 1
+#### Example to optimize Wood Yield and Soil Loss in Paredes-> MainFloat 50 res 50 Multi Paredes 0 1
 
 The program will try to find valid solutions for 8 hours (28800000 miliseconds) or until there's a memory error.
 
 ## MainTime Paremeters
-Same as MainWithSpecific but the 4th parameter sets the time limit for finding solutions in miliseconds
+Same as MainFloat but the 4th parameter sets the time limit for finding solutions in miliseconds
 
 Example: MainTime 50 res 50 28800000 Paredes 0 1
 
@@ -239,31 +239,31 @@ In Multi Criteria optimization the following files are written to the Results fo
 Output files Multi-Criteria:
 
 
-allSolutionPairs.csv:- MU/Presc pairs for every valid solution found 
+AllSolutions.csv:- MU/Presc pairs for every valid solution found 
 
-outputPairsMulti.csv:- MU/Presc pairs for every pareto solution (determined by choco solver)
+ParetoSolutions.csv:- MU/Presc pairs for every pareto solution (determined by choco solver)
 
-nonPareto.csv:- Values of the optimizable criteria for every valid solution found 
+NonParetoPoints.csv:- Values of the optimizable criteria for every valid solution found 
 
-pareto.csv:- Values of the optimizable criteria for every pareto solution found 
+ParetoPoints.csv:- Values of the optimizable criteria for every pareto solution found 
 
-pairCriteria.csv:- MU/Presc pairs for every pareto solution along with associated values of objective criteria.
+SolutionDETAILS.csv:- MU/Presc pairs for every pareto solution along with associated values of objective criteria.
 
 
 In Single Criteria optimization the following file is written to the Results folder:
 
-outputPairsSingle.csv:- MU/Presc pairs for the solution found 
+SingleSolution.csv:- MU/Presc pairs for the solution found 
 
 # Step 5: Visualizing the example.
 
 
 Run seeMap.py to see the Vale de Sousa Forest and it's sub-divisions
 
-Run plotPareto.py to plot a 2d Pareto frontier using the Results/parento.csv file (Only works if there are only 2 criteria in the pareto.csv file)
+Run plot2DPareto.py to plot a 2d Pareto frontier using the Results/parento.csv file (Only works if there are only 2 criteria in the pareto.csv file)
 
-Run seeResults.py to observe the contents of the solutions in the outputPairsMulti.csv file
+Run seeResults.py to observe the contents of the solutions in the ParetoSolutions.csv file
 
-Run the makeSolFile.py and then the Maps/maps.py file to paint the solution in the outputPairsSingle.csv onto files in the Maps/MapOutput folder
+Run the makeSolFile.py and then the Maps/maps.py file to paint the solution in the SingleSolution.csv onto files in the Maps/MapOutput folder
 
 Run the makeSolFileMulti.py and then the Maps/maps.py file to pick a solution from the outputPairsSingleMult.csv file and paint the solution onto files in the Maps/MapOutput folder
 

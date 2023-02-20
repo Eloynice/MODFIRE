@@ -9,64 +9,109 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-/*
+
 public class MainTime {
 
     public static void giveDomains (Model model, IntVar[] ugs, String dir, IntVar[] crit0, IntVar[] crit1,
                                     IntVar[] crit2, IntVar[] crit3, IntVar[] crit4, IntVar[] crit5,
-                                    IntVar[] crit6, IntVar[] crit7, IntVar[] crit8,IntVar[] crit9,IntVar[] crit10, UG[] nodes){
+                                    IntVar[] crit6, IntVar[] crit7, IntVar[] crit8,IntVar[] crit9,IntVar[] crit10, UG[] nodes, ArrayList<Boolean> flags){
         int index = 0;
         try {
             File allUg = new File(dir + "/ugs_init.txt");
             Scanner readerUg = new Scanner(allUg);
 
             File critFile0 = new File(dir + "/crit_file0.txt");
-            Scanner reader0 = new Scanner(critFile0);
+            Scanner reader0 = null;
+            if(flags.get(0))
+                reader0 = new Scanner(critFile0);
 
             File critFile1 = new File(dir + "/crit_file1.txt");
-            Scanner reader1 = new Scanner(critFile1);
+            Scanner reader1 = null;
+            if(flags.get(1))
+                reader1 = new Scanner(critFile1);
 
             File critFile2 = new File(dir + "/crit_file2.txt");
-            Scanner reader2 = new Scanner(critFile2);
+            Scanner reader2 = null;
+            if(flags.get(2))
+                reader2 = new Scanner(critFile2);
+
 
             File critFile3 = new File(dir + "/crit_file3.txt");
-            Scanner reader3 = new Scanner(critFile3);
+            Scanner reader3 = null;
+            if(flags.get(3))
+                reader3 = new Scanner(critFile3);
 
             File critFile4 = new File(dir + "/crit_file4.txt");
-            Scanner reader4 = new Scanner(critFile4);
+            Scanner reader4 = null;
+            if(flags.get(4))
+                reader4 = new Scanner(critFile4);
 
             File critFile5 = new File(dir + "/crit_file5.txt");
-            Scanner reader5 = new Scanner(critFile5);
+            Scanner reader5 = null;
+            if(flags.get(5))
+                reader5 = new Scanner(critFile5);
 
             File critFile6 = new File(dir + "/crit_file6.txt");
-            Scanner reader6 = new Scanner(critFile6);
+            Scanner reader6 = null;
+            if(flags.get(6))
+                reader6 = new Scanner(critFile6);
 
             File critFile7 = new File(dir + "/crit_file7.txt");
-            Scanner reader7 = new Scanner(critFile7);
+            Scanner reader7 = null;
+            if(flags.get(7))
+                reader7 = new Scanner(critFile7);
 
             File critFile8 = new File(dir + "/crit_file8.txt");
-            Scanner reader8 = new Scanner(critFile8);
+            Scanner reader8 = null;
+            if(flags.get(8))
+                reader8 = new Scanner(critFile8);
 
             File critFile9 = new File(dir + "/crit_file9.txt");
-            Scanner reader9 = new Scanner(critFile9);
+            Scanner reader9 = null;
+            if(flags.get(9))
+                reader9 = new Scanner(critFile9);
 
             File critFile10 = new File(dir + "/crit_file10.txt");
-            Scanner reader10 = new Scanner(critFile10);
+            Scanner reader10 = null;
+            if(flags.get(10))
+                reader10 = new Scanner(critFile10);
 
             while (readerUg.hasNextLine()) {
                 String dataUg = readerUg.nextLine();
 
-                String data0 = reader0.nextLine();
-                String data1 = reader1.nextLine();
-                String data2 = reader2.nextLine();
-                String data3 = reader3.nextLine();
-                String data4 = reader4.nextLine();
-                String data5 = reader5.nextLine();
-                String data6 = reader6.nextLine();
-                String data7 = reader7.nextLine();
-                String data8 = reader8.nextLine();
-                String data9 = reader9.nextLine();
-                String data10 = reader10.nextLine();
+                String data0 = null;
+                if(flags.get(0))
+                    data0 = reader0.nextLine();
+                String data1 = null;
+                if(flags.get(1))
+                    data1 = reader1.nextLine();
+                String data2 = null;
+                if(flags.get(2))
+                    data2 = reader2.nextLine();
+                String data3 = null;
+                if(flags.get(3))
+                    data3 = reader3.nextLine();
+                String data4 = null;
+                if(flags.get(4))
+                    data4 = reader4.nextLine();
+                String data5 = null;
+                if(flags.get(5))
+                    data5 = reader5.nextLine();
+                String data6 = null;
+                if(flags.get(6))
+                    data6 = reader6.nextLine();
+                String data7 = null;
+                if(flags.get(7))
+                    data7 = reader7.nextLine();
+                String data8 = null;
+                if(flags.get(8))
+                    data8 = reader8.nextLine();
+                String data9 = null;
+                if(flags.get(9))
+                    data9 = reader9.nextLine();
+                String data10 = null;
+                if(flags.get(10))
+                    data10 = reader10.nextLine();
 
 
 
@@ -74,17 +119,39 @@ public class MainTime {
                 if(nodes[index].valid) {
                     String[] str_split = dataUg.split(",", 0);
 
-                    String[] str_split0 = data0.split(",", 0);
-                    String[] str_split1 = data1.split(",", 0);
-                    String[] str_split2 = data2.split(",", 0);
-                    String[] str_split3 = data3.split(",", 0);
-                    String[] str_split4 = data4.split(",", 0);
-                    String[] str_split5 = data5.split(",", 0);
-                    String[] str_split6 = data6.split(",", 0);
-                    String[] str_split7 = data7.split(",", 0);
-                    String[] str_split8 = data8.split(",", 0);
-                    String[] str_split9 = data9.split(",", 0);
-                    String[] str_split10 = data10.split(",", 0);
+                    String[] str_split0 = null;
+                    if(flags.get(0))
+                        str_split0 = data0.split(",", 0);
+                    String[] str_split1 = null;
+                    if(flags.get(1))
+                        str_split1 = data1.split(",", 0);
+                    String[] str_split2 = null;
+                    if(flags.get(2))
+                        str_split2 = data2.split(",", 0);
+                    String[] str_split3 = null;
+                    if(flags.get(3))
+                        str_split3 = data3.split(",", 0);
+                    String[] str_split4 = null;
+                    if(flags.get(4))
+                        str_split4 = data4.split(",", 0);
+                    String[] str_split5 = null;
+                    if(flags.get(5))
+                        str_split5 = data5.split(",", 0);
+                    String[] str_split6 = null;
+                    if(flags.get(6))
+                        str_split6 = data6.split(",", 0);
+                    String[] str_split7 = null;
+                    if(flags.get(7))
+                        str_split7 = data7.split(",", 0);
+                    String[] str_split8 = null;
+                    if(flags.get(8))
+                        str_split8 = data8.split(",", 0);
+                    String[] str_split9 = null;
+                    if(flags.get(9))
+                        str_split9 = data9.split(",", 0);
+                    String[] str_split10 = null;
+                    if(flags.get(10))
+                        str_split10 = data10.split(",", 0);
 
 
 
@@ -105,19 +172,38 @@ public class MainTime {
 
                     for (int i = 0; i < size; i++) {
                         toInsert[i] = Integer.parseInt(str_split[i]);
-                        toInsert0[i] = (int) Float.parseFloat(str_split0[i]);
-                        toInsert1[i] = (int) Float.parseFloat(str_split1[i]);
+                        if(flags.get(0)) toInsert0[i] = (int) Float.parseFloat(str_split0[i]);
+                        else toInsert0[i] = 0;
 
-                        toInsert2[i] = (int) Float.parseFloat(str_split2[i]);
-                        toInsert3[i] = (int) Float.parseFloat(str_split3[i]);
-                        toInsert4[i] = (int) Float.parseFloat(str_split4[i]);
-                        toInsert5[i] = (int) Float.parseFloat(str_split5[i]);
-                        toInsert6[i] = (int) Float.parseFloat(str_split6[i]);
-                        toInsert7[i] = (int) Float.parseFloat(str_split7[i]);
-                        toInsert8[i] = (int) Float.parseFloat(str_split8[i]);
-                        toInsert9[i] = (int) Float.parseFloat(str_split9[i]);
-                        toInsert10[i] = (int) Float.parseFloat(str_split10[i]);
+                        if(flags.get(1)) toInsert1[i] = (int) Float.parseFloat(str_split1[i]);
+                        else toInsert1[i] = 0;
 
+                        if(flags.get(2)) toInsert2[i] = (int) Float.parseFloat(str_split2[i]);
+                        else toInsert2[i] = 0;
+
+                        if(flags.get(3)) toInsert3[i] = (int) Float.parseFloat(str_split3[i]);
+                        else toInsert3[i] = 0;
+
+                        if(flags.get(4)) toInsert4[i] = (int) Float.parseFloat(str_split4[i]);
+                        else toInsert4[i] = 0;
+
+                        if(flags.get(5)) toInsert5[i] = (int) Float.parseFloat(str_split5[i]);
+                        else toInsert5[i] = 0;
+
+                        if(flags.get(6)) toInsert6[i] = (int) Float.parseFloat(str_split6[i]);
+                        else toInsert6[i] = 0;
+
+                        if(flags.get(7)) toInsert7[i] = (int) Float.parseFloat(str_split7[i]);
+                        else toInsert7[i] = 0;
+
+                        if(flags.get(8)) toInsert8[i] = (int) Float.parseFloat(str_split8[i]);
+                        else toInsert8[i] = 0;
+
+                        if(flags.get(9)) toInsert9[i] = (int) Float.parseFloat(str_split9[i]);
+                        else toInsert9[i] = 0;
+
+                        if(flags.get(10)) toInsert10[i] = (int) Float.parseFloat(str_split10[i]);
+                        else toInsert10[i] = 0;
 
                     }
 
@@ -161,17 +247,17 @@ public class MainTime {
             }
 
             readerUg.close();
-            reader0.close();
-            reader1.close();
-            reader2.close();
-            reader3.close();
-            reader4.close();
-            reader5.close();
-            reader6.close();
-            reader7.close();
-            reader8.close();
-            reader9.close();
-            reader10.close();
+            if(flags.get(0)) reader0.close();
+            if(flags.get(1)) reader1.close();
+            if(flags.get(2)) reader2.close();
+            if(flags.get(3)) reader3.close();
+            if(flags.get(4)) reader4.close();
+            if(flags.get(5)) reader5.close();
+            if(flags.get(6)) reader6.close();
+            if(flags.get(7)) reader7.close();
+            if(flags.get(8)) reader8.close();
+            if(flags.get(9)) reader9.close();
+            if(flags.get(10)) reader10.close();
 
 
         } catch (FileNotFoundException e) {
@@ -190,13 +276,11 @@ public class MainTime {
         Scanner islandReader = new Scanner(island);
         while (islandReader.hasNextLine()) {
             islandUGs.add(Integer.parseInt(islandReader.nextLine()));
-
         }
 
         islandReader.close();
 
-        String criterion = args[3];
-
+        int loopTime = Integer.parseInt(args[3]);
 
         /*Set Flags
         0-woodYield
@@ -210,7 +294,7 @@ public class MainTime {
         8-R
         9-Rait
         10-Sbiom
-
+         */
 
         String[] varNames = new String[]{"Crit0","Crit1","Crit2","Crit3","Crit4","Crit5","Crit6","Crit7","Crit8","Crit9","Crit10"};
         ArrayList<Boolean> flags = new ArrayList<>();
@@ -227,6 +311,7 @@ public class MainTime {
 
         Model m = new Model("Forest Management");
 
+        System.out.println("Reading Input Files");
         BufferedReader reader = new BufferedReader(new FileReader(fileDirectory + "/ugs_init.txt"));
 
         int nUgs = 0;
@@ -236,14 +321,15 @@ public class MainTime {
         UG[] nodes = new UG[nUgs];
         //if 0 ignore
         int minBorder = Integer.parseInt(args[2]);
+        UG.setupInternalIds(nodes, fileDirectory);
         if(minBorder <= 0)
-            UG.fillArray(nodes, fileDirectory, 0);
+            UG.fillArray(nodes, fileDirectory, 0, flags);
         else
-            UG.fillArray(nodes, fileDirectory, minBorder);
+            UG.fillArray(nodes, fileDirectory, 50, flags);
 
         for(int i = 0; i < nodes.length; i++){
-            if(!islandUGs.contains(nodes[i].externalId)){
-                nodes[i].valid = false;
+            if(islandUGs.contains(nodes[i].externalId)){
+                nodes[i].valid = true;
             }
         }
 
@@ -266,46 +352,50 @@ public class MainTime {
         IntVar[] crit10 = new IntVar[nUgs];
 
         giveDomains(m, ugs, fileDirectory, crit0, crit1, crit2, crit3, crit4, crit5, crit6,
-                crit7, crit8, crit9, crit10, nodes); // reads the ugs_init file and initializes each variable with its possible prescription values as domain
+                crit7, crit8, crit9, crit10, nodes, flags); // reads the ugs_init file and initializes each variable with its possible prescription values as domain
 
 
-        System.out.println("running");
+        System.out.println("Setting up Constraints");
 
 
         for(int ugIndex = 0; ugIndex < nodes.length; ugIndex++) { //loops through every UG
             //the propagator takes as parameters the index of the UG we are starting out from
             //the nodes with all the info, the constraint variable array and the area limit
-            if(nodes[ugIndex].valid) {
-                new Constraint("Area Limit Constraint", new CustomPropagator2(ugIndex, nodes, ugs, areaLimit)).post();
+            if(nodes[ugIndex].valid && !nodes[ugIndex].noAdjacencies) {
+                new Constraint("Area Limit Constraint", new CustomPropagatorFloat(ugIndex, nodes, ugs, areaLimit)).post();
             }
         }
 
-
-        int valids = 0;
         for(int i = 0; i < nodes.length; i++){
             if(nodes[i].valid) {
-                valids++;
-            }
-        }
 
-
-        for(int i = 0; i < nodes.length; i++){
-            if(nodes[i].valid) {
-                IntVar prescIndex = m.intVar(0, 255);
+                IntVar prescIndex = m.intVar(0, nodes[i].presc.length);
 
                 m.element(ugs[i], nodes[i].presc, prescIndex).post();
 
-                m.element(crit0[i], nodes[i].crit0, prescIndex).post();
-                m.element(crit1[i], nodes[i].crit1, prescIndex).post();
-                m.element(crit2[i], nodes[i].crit2, prescIndex).post();
-                m.element(crit3[i], nodes[i].crit3, prescIndex).post();
-                m.element(crit4[i], nodes[i].crit4, prescIndex).post();
-                m.element(crit5[i], nodes[i].crit5, prescIndex).post();
-                m.element(crit6[i], nodes[i].crit6, prescIndex).post();
-                m.element(crit7[i], nodes[i].crit7, prescIndex).post();
-                m.element(crit8[i], nodes[i].crit8, prescIndex).post();
-                m.element(crit9[i], nodes[i].crit9, prescIndex).post();
-                m.element(crit10[i], nodes[i].crit10, prescIndex).post();
+                if(flags.get(0))    m.element(crit0[i], nodes[i].crit0, prescIndex).post();
+                else    m.arithm(crit0[i], "=", 0).post();
+                if(flags.get(1))    m.element(crit1[i], nodes[i].crit1, prescIndex).post();
+                else    m.arithm(crit1[i], "=", 0).post();
+                if(flags.get(2))    m.element(crit2[i], nodes[i].crit2, prescIndex).post();
+                else    m.arithm(crit2[i], "=", 0).post();
+                if(flags.get(3))    m.element(crit3[i], nodes[i].crit3, prescIndex).post();
+                else    m.arithm(crit3[i], "=",0).post();
+                if(flags.get(4))    m.element(crit4[i], nodes[i].crit4, prescIndex).post();
+                else    m.arithm(crit4[i], "=",0).post();
+                if(flags.get(5))    m.element(crit5[i], nodes[i].crit5, prescIndex).post();
+                else    m.arithm(crit5[i], "=",0).post();
+                if(flags.get(6))    m.element(crit6[i], nodes[i].crit6, prescIndex).post();
+                else    m.arithm(crit6[i], "=",0).post();
+                if(flags.get(7))    m.element(crit7[i], nodes[i].crit7, prescIndex).post();
+                else    m.arithm(crit7[i], "=",0).post();
+                if(flags.get(8))    m.element(crit8[i], nodes[i].crit8, prescIndex).post();
+                else    m.arithm(crit8[i], "=",0).post();
+                if(flags.get(9))    m.element(crit9[i], nodes[i].crit9, prescIndex).post();
+                else    m.arithm(crit9[i], "=",0).post();
+                if(flags.get(10))   m.element(crit10[i], nodes[i].crit10, prescIndex).post();
+                else    m.arithm(crit10[i], "=",0).post();
+
 
             }
 
@@ -369,6 +459,10 @@ public class MainTime {
         IntVar[] allSums = new IntVar[]{sum0, sum1, sum2, sum3,sum4,sum5,sum6,sum7,sum8,sum9,sum10};
         IntVar[][] allTotals = new IntVar[][]{crit0, crit1,crit2,crit3,crit4,crit5,crit6,crit7,crit8,crit9,crit10};
 
+
+        FileWriter pairCrits = new FileWriter("Results/"+regionFile+"-ParetoSolutionDetails.csv");
+
+
         //Multi Criterion with Pareto
 
         int index = 0;
@@ -384,7 +478,7 @@ public class MainTime {
         Solver solver = m.getSolver();
         solver.plugMonitor(po);
 
-        FileWriter nonPareto = new FileWriter("nonPareto.csv");
+        FileWriter nonPareto = new FileWriter("Results/"+regionFile+"-NonParetoPoints.csv");
         for (int i = 0; i < flags.size(); i++) {
             if (flags.get(i)) {
                 nonPareto.write(varNames[i]+",");
@@ -392,16 +486,18 @@ public class MainTime {
         }
         nonPareto.write("end\n");
 
-        FileWriter allSolutionPairs = new FileWriter("allSolutionPairs.csv");
+        FileWriter allSolutionPairs = new FileWriter("Results/"+regionFile+"-AllSolutions.csv");
+        System.out.println("Running Solver");
 
         // optimization
         //(System.currentTimeMillis()-startTime)<18000000
+        //8 hours  28800000
+        //13 hours 46800000
         int l = 1;
         long startTime = System.currentTimeMillis(); //fetch starting time
         try{
-            while(solver.solve() & (System.currentTimeMillis()-startTime)<28800000)
+            while(solver.solve() & (System.currentTimeMillis()-startTime)<loopTime)
             {
-                //System.out.println(l);
                 for (int i = 0; i < flags.size(); i++) {
                     if(flags.get(i))
                         nonPareto.write(allSums[i].getValue()+",");
@@ -421,36 +517,21 @@ public class MainTime {
                     }
                 }
                 l++;
-
-                for(int i = 0; i < nodes.length; i++){
-                    if(nodes[i].valid){
-
-                        System.out.print(ugs[i] + ", ");
-
-                        for (int j = 0; j < flags.size(); j++) {
-                            if(flags.get(j))
-                                System.out.print(varNames[j] +":"+ allTotals[j][i].getValue()+",");
-                        }
-                        System.out.println("end");
-                    }
-                }
-
-                l++;
             }
         }
         catch (OutOfMemoryError e){
-            System.out.println("Reached Exception");
+            pairCrits.write("Reached Exception");
         }
 
         nonPareto.close();
-        //allSolutionPairs.close();
+        allSolutionPairs.close();
 
         List<Solution> paretoFront = po.getParetoFront();
 
-        System.out.println("The pareto front has " + paretoFront.size() + " solutions : ");
-        FileWriter outputPairs = new FileWriter("outputPairsMulti.csv");
+        pairCrits.write("The pareto front has " + paretoFront.size() + " solutions : ");
+        FileWriter outputPairs = new FileWriter("Results/"+regionFile+"-ParetoSolutions.csv");
 
-        FileWriter pareto = new FileWriter("pareto.csv");
+        FileWriter pareto = new FileWriter("Results/"+regionFile+"-ParetoPoints.csv");
 
         for (int i = 0; i < flags.size(); i++) {
             if (flags.get(i)) {
@@ -465,9 +546,9 @@ public class MainTime {
 
             for (int i = 0; i < flags.size(); i++) {
                 if (flags.get(i))
-                    System.out.print(varNames[i]+"="+so.getIntVal(allSums[i])+",");
+                    pairCrits.write(varNames[i]+"="+so.getIntVal(allSums[i])+",");
             }
-            System.out.println("end");
+            pairCrits.write("end\n");
 
             outputPairs.write("Pareto Solution: " + l2+",");
             for (int i = 0; i < flags.size(); i++) {
@@ -480,13 +561,13 @@ public class MainTime {
             for (int i = 0; i < ugs.length; i++) {
                 if (nodes[i].valid) {
 
-                    System.out.print(i+"_"+so.getIntVal(ugs[i])+", ");
+                    pairCrits.write("UG_"+i+"="+so.getIntVal(ugs[i])+", ");
 
                     for (int j = 0; j < flags.size(); j++) {
                         if (flags.get(j))
-                            System.out.print(varNames[j]+":"+so.getIntVal(allTotals[j][i])+",");
+                            pairCrits.write(varNames[j]+":"+so.getIntVal(allTotals[j][i])+",");
                     }
-                    System.out.println("end");
+                    pairCrits.write("end\n");
 
                     outputPairs.write(nodes[i].externalId + "," +so.getIntVal(ugs[i])  + "\n");
                 }
@@ -502,9 +583,8 @@ public class MainTime {
             l2++;
         }
         outputPairs.close();
-
         pareto.close();
-
-        System.out.println(l + " solutions");
+        pairCrits.write(l + " solutions");
+        pairCrits.close();
     }
-} */
+}

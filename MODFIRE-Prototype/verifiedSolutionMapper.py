@@ -2,7 +2,7 @@ import csv, re, sqlite3
 
 fy= open("Maps/MapInputFile.txt", "w+")
 
-con = sqlite3.connect("database_modfire.db")
+con = sqlite3.connect("res/database_modfire.db")
 cur = con.cursor()
 Filemame = "VerifiedSolution.csv"
 f=open(Filemame,"r")
@@ -28,6 +28,7 @@ for line in lines:
 		fy.write(toWrite)
 		
 fy.close()
+con.close()
 	
 file = open('Maps/UG_Vertice_Concelho.txt')
 nlin = -1
@@ -113,6 +114,8 @@ fy= open("Maps/MapInputFile.txt", "r")
 lines=fy.readlines()
 
 for year in range(2020, 2071):
+    print("Outputting year: "+str(year))
+    
     for unit in MUNames:    
         xx = []
         yy = []
