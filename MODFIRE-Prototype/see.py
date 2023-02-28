@@ -112,11 +112,11 @@ for line in file:
     plt.fill(xx, yy, facecolor='red', edgecolor='black', linewidth=1)    
 
 
-#penafiel fronts between 45 and 50.
 
 
-v1 = [199,516,553,660,193,175,479,166,636,526,595,580,406,352,406,265,280]
-#969,970,971, 1505
+#31,84,85,86,87,213,217,424,431,432,441,462,511,570,644,645,647,693
+v1 = [86,87,213,431,432,441,462,463,511,644,645,647]
+
 for i in range(0, len(v1)):
     xx = []
     yy = []
@@ -125,7 +125,7 @@ for i in range(0, len(v1)):
         yy.append(v[1])
     plt.fill(xx, yy, facecolor='cyan', edgecolor='black', linewidth=1)
 
-v2 = [635,636,596,741,447,382,708,719,722,635,690,597,660,651,510,740,281]
+v2 = [84,85,693,570,31,217,424]
 for i in range(0, len(v2)):
     xx = []
     yy = []

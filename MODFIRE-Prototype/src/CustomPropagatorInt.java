@@ -1,4 +1,3 @@
-import org.chocosolver.solver.constraints.Propagator;
 import org.chocosolver.solver.constraints.PropagatorPriority;
 import org.chocosolver.solver.exception.ContradictionException;
 import org.chocosolver.solver.variables.IntVar;
@@ -7,17 +6,18 @@ import org.chocosolver.util.ESat;
 
 import java.util.ArrayList;
 
-public class CustomPropagatorInt extends Propagator<IntVar> {
+public class CustomPropagatorInt extends org.chocosolver.solver.constraints.Propagator<IntVar> {
 
     final int ugIndex; // refers to the UG we are starting out from
     final UG[] nodes;
-    final float b; // refers to the sum area limit
+    final int b; // refers to the sum area limit
     //final IntVar[] woodYield;
 
 
 
-    public CustomPropagatorInt(int ugIndex, UG[] nodes, IntVar[] ugs, float sum ) {
+    public CustomPropagatorInt(int ugIndex, UG[] nodes, IntVar[] ugs, int sum ) {
         super(ugs, PropagatorPriority.LINEAR, false);
+        //super(ugs);
         this.ugIndex = ugIndex;
         this.nodes = nodes;
         this.b = sum;

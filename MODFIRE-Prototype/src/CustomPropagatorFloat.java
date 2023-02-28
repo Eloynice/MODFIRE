@@ -17,6 +17,7 @@ public class CustomPropagatorFloat extends org.chocosolver.solver.constraints.Pr
 
     public CustomPropagatorFloat(int ugIndex, UG[] nodes, IntVar[] ugs, float sum ) {
         super(ugs, PropagatorPriority.LINEAR, false);
+        //super(ugs);
         this.ugIndex = ugIndex;
         this.nodes = nodes;
         this.b = sum;

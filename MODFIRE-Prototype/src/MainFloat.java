@@ -513,13 +513,14 @@ public class MainFloat {
             Solver s = m.getSolver();
 
             System.out.println("Running Solver");
+            //s.setSearch(Search.minDomUBSearch(ugs));
 
             //s.setSearch(Search.minDomLBSearch(ugs));
             //s.setSearch(Search.activityBasedSearch(ugs));
             //ParallelPortfolio portfolio = new ParallelPortfolio(false);
             //portfolio.stealNogoodsOnRestarts();
             //portfolio.addModel(m);
-            s.setSearch(Search.activityBasedSearch(ugs));
+            //s.setSearch(Search.activityBasedSearch(ugs));
             //portfolio.addModel(m);
 
             //if(portfolio.solve()){
@@ -584,7 +585,16 @@ public class MainFloat {
             ParetoOptimizer po = new ParetoOptimizer(Model.MAXIMIZE, toOptimize);
 
             Solver solver = m.getSolver();
-            solver.setSearch(Search.activityBasedSearch(ugs));
+            //solver.setSearch(Search.activityBasedSearch(ugs));
+            //solver.setSearch(Search.minDomUBSearch(ugs));
+
+            //solver.setSearch(Search.activityBasedSearch(toOptimize));
+            //solver.setSearch(Search.activityBasedSearch(allSums));
+            //solver.setSearch(Search.activityBasedSearch(crit0));
+            //solver.setSearch(Search.activityBasedSearch(crit1));
+            //solver.setSearch(Search.activityBasedSearch(crit2));
+
+
             solver.plugMonitor(po);
 
             FileWriter nonPareto = new FileWriter("Results/"+regionFile+"-NonParetoPoints.csv");
@@ -596,6 +606,8 @@ public class MainFloat {
             nonPareto.write("end\n");
 
             FileWriter allSolutionPairs = new FileWriter("Results/"+regionFile+"-AllSolutions.csv");
+            FileWriter timesFile = new FileWriter("Results/"+regionFile+"-Times.csv");
+
             //BufferedWriter out = new BufferedWriter(allSolutionPairs);
             System.out.println("Running Solver");
 
@@ -610,7 +622,7 @@ public class MainFloat {
             int l = 1;
             long startTime = System.currentTimeMillis(); //fetch starting time
             try{
-                while(solver.solve() & (System.currentTimeMillis()-startTime)<7200000)
+                while(solver.solve() & (System.currentTimeMillis()-startTime)<28800000)
                 {
                     for (int i = 0; i < flags.size(); i++) {
                         if(flags.get(i))
@@ -631,6 +643,8 @@ public class MainFloat {
                         }
                     }
 
+                    timesFile.write((System.currentTimeMillis()-startTime)+"\n");
+
                     allSolutionPairs.flush();
                     nonPareto.flush();
                     System.out.println("Found solution-" + l);
@@ -642,6 +656,8 @@ public class MainFloat {
             }
 
             System.out.println("Here");
+
+            timesFile.close();
 
             nonPareto.close();
             allSolutionPairs.close();

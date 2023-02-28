@@ -356,4 +356,147 @@ public class UG {
         }
     }
 
+    static public void fillNoCriteria(UG[] array, String dir, int minBorder) {
+        int index = 0;
+
+        try {
+            File adj_init = new File(dir + "/adj_init.txt"); //Adjacency input file
+            Scanner readerAdj = new Scanner(adj_init);
+
+            File borders_init = new File(dir + "/border_init.txt"); //Borders input file
+            Scanner readerBorders = new Scanner(borders_init);
+
+            File ext_init = new File(dir + "/external_init.txt");
+            Scanner readerExt = new Scanner(ext_init);
+
+
+            File ugs_init = new File(dir + "/ugs_init.txt");
+            Scanner readerPresc = new Scanner(ugs_init);
+
+            File years_init = new File(dir + "/years_init.txt");
+            Scanner readerYears = new Scanner(years_init);
+
+            File area_init = new File(dir + "/area_init.txt");
+            Scanner readerArea = new Scanner(area_init);
+
+
+            while (readerAdj.hasNextLine()) {
+                UG toInsert = array[index];
+                toInsert.treated = false;
+                toInsert.time = 0;
+
+
+                toInsert.adj = adjacencyReader(index, readerAdj, readerBorders, minBorder, array);
+
+                toInsert.externalId = Integer.parseInt(readerExt.nextLine());
+
+                toInsert.area = Float.parseFloat(readerArea.nextLine());
+
+                toInsert.presc = returnInsertable(readerPresc);
+
+                String data = readerYears.nextLine();
+                String[] str_split = data.split("/", 0);
+                int size = str_split.length;
+                toInsert.years = new int[size][];
+
+                for(int i = 0; i < size; i++) {
+                    toInsert.years[i] = returnPeriods(str_split[i]);
+                }
+
+                if(toInsert.adj[0] == -1){
+                    toInsert.noAdjacencies = true; //If unit has no adjacencies it's still used but not in the main loop
+                }
+
+                array[index] = toInsert;
+                index++;
+            }
+
+            readerAdj.close();
+            readerPresc.close();
+            readerExt.close();
+            readerBorders.close();
+            readerArea.close();
+            readerYears.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    static public void fillOneCrit(UG[] array, String dir, int minBorder, ArrayList<Boolean> flags) {
+        int index = 0;
+
+        try {
+            File adj_init = new File(dir + "/adj_init.txt"); //Adjacency input file
+            Scanner readerAdj = new Scanner(adj_init);
+
+            File borders_init = new File(dir + "/border_init.txt"); //Borders input file
+            Scanner readerBorders = new Scanner(borders_init);
+
+            File ext_init = new File(dir + "/external_init.txt");
+            Scanner readerExt = new Scanner(ext_init);
+
+
+            File ugs_init = new File(dir + "/ugs_init.txt");
+            Scanner readerPresc = new Scanner(ugs_init);
+
+            File years_init = new File(dir + "/years_init.txt");
+            Scanner readerYears = new Scanner(years_init);
+
+            File area_init = new File(dir + "/area_init.txt");
+            Scanner readerArea = new Scanner(area_init);
+
+            File critFile0 = new File(dir + "/crit_file0.txt");
+            Scanner reader0 = new Scanner(critFile0);
+
+            while (readerAdj.hasNextLine()) {
+                UG toInsert = array[index];
+                toInsert.treated = false;
+
+                toInsert.adj = adjacencyReader(index, readerAdj, readerBorders, minBorder, array);
+
+                toInsert.externalId = Integer.parseInt(readerExt.nextLine());
+                toInsert.area = Float.parseFloat(readerArea.nextLine());
+
+                toInsert.presc = returnInsertable(readerPresc);
+
+                String data = readerYears.nextLine();
+                //String[] removeVSlash = data.split("\\|", 0);
+                String[] str_split = data.split("/", 0);
+                int size = str_split.length;
+                toInsert.years = new int[size][];
+
+                for(int i = 0; i < size; i++) {
+                    toInsert.years[i] = returnPeriods(str_split[i]);
+                }
+
+
+                toInsert.crit0 = returnInsertable2(reader0);
+
+                if(toInsert.adj[0] == -1){
+                    toInsert.noAdjacencies = true; //If unit has no adjacencies it's still used but not in the main loop
+                }
+
+                array[index] = toInsert;
+                index++;
+            }
+
+
+
+            readerAdj.close();
+            readerPresc.close();
+            readerExt.close();
+            readerBorders.close();
+            readerArea.close();
+            readerYears.close();
+
+            reader0.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
 }

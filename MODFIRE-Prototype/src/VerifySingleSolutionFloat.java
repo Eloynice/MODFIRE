@@ -245,7 +245,6 @@ public class VerifySingleSolutionFloat {
                 int paieSol = Integer.parseInt(arr[7]);
                 int paiiSol = Integer.parseInt(arr[8]);
 
-
                 FileWriter  outputFile = new FileWriter ("VerifiedSolution.csv");
 
                 readRegionFile("ParPen-ParetoSolutions.csv", nodes, parpenSol, lenParPen, prescIndexes, intExt);
