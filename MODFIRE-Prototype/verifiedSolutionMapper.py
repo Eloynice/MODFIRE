@@ -2,7 +2,7 @@ import csv, re, sqlite3
 
 fy= open("Maps/MapInputFile.txt", "w+")
 
-con = sqlite3.connect("res/database_modfire.db")
+con = sqlite3.connect("database_modfire.db")
 cur = con.cursor()
 Filemame = "VerifiedSolution.csv"
 f=open(Filemame,"r")

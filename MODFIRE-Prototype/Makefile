@@ -76,7 +76,7 @@ verify:
 verifySingle:
 	java $(JFLAGS) VerifySingleSolutionFloat 50 res 50 1mExceptParpen17402.vmt
 verifyspec: 
-	java $(JFLAGS) VerifySolutionsSpecific 50 res 25 this
+	java $(JFLAGS) VerifySpecific 50 res 15 this
 	
 paredesSingle:	
 	java $(JFLAGS) MainFloat 50 res 50 Single Paredes 0 1 2
@@ -121,7 +121,13 @@ full:
 	java $(JFLAGS) NoCriteriaSingle 50 res 25 Full
 	
 full2:
-	java $(JFLAGS) NoCriteria 50 res 25 Full
+	java $(JFLAGS) NoCriteria 50 res 15 Full
+	
+OneOpt:
+	java $(JFLAGS) MainFloatOpt 50 res 15 Single Full 0
+	
+OneOpt2:
+	java $(JFLAGS) OneCritOpt 50 res 15 Single Full
 	
 testall:
 	java $(JFLAGS) MainFloat 50 res 50 Single PaivaIslands 0 1 2 3
@@ -143,6 +149,12 @@ north:
 	java $(JFLAGS) MainFloat 50 res 1 Single NorthEast 0 1 2 3
 	java $(JFLAGS) MainFloat 50 res 1 Single NorthWest 0 1 2 3
 
+
+onecrit:
+	java $(JFLAGS) OneCrit 50 res 15 Single Full
+
+onecrit2:
+	java $(JFLAGS) OneCrit 50 res 15 Multi Full
 
 nocrit1:
 	java $(JFLAGS) NoCriteriaSingle 50 res 25 PaivaIslands
@@ -175,3 +187,7 @@ nocritVarious:
 	java $(JFLAGS) NoCriteria 50 res 10 PaivaEast
 	java $(JFLAGS) NoCriteria 50 res 10 PaivaWest
 	java $(JFLAGS) NoCriteria 50 res 10 ParPen
+
+
+specall:
+	java $(JFLAGS) VerifyAllSolutions 50 res 15

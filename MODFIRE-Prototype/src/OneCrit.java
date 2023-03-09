@@ -166,46 +166,45 @@ public class OneCrit {
         // Single Criterion Optimization
         if(criterion.equalsIgnoreCase("single")) {
 
-            pairCrits = new FileWriter("Results/"+regionFile+"-SingleSolutionDetails.csv");
+            pairCrits = new FileWriter("Results/OC_"+regionFile+"-SingleSolutionDetails.csv");
 
-            //m.setObjective(Model.MAXIMIZE, sum0);
+            m.setObjective(Model.MAXIMIZE, sum0);
 
             Solver s = m.getSolver();
 
             System.out.println("Running Solver");
 
-            //s.setSearch(Search.minDomLBSearch(ugs));
-            //s.setSearch(Search.activityBasedSearch(ugs));
+            //s.setSearch(Search.minDomUBSearch(ugs));
+            s.setSearch(Search.activityBasedSearch(ugs));
 
             if (s.solve()) {
                 System.out.println("FOUND OPTIMAL SOLUTION!");
-                FileWriter outputPairs = new FileWriter("Results/"+regionFile+"-SingleSolution.csv");
-
+                FileWriter outputPairs = new FileWriter("Results/OC_"+regionFile+"-SingleSolution.csv");
+                outputPairs.write("Crit0: "+sum0.getValue()+"\n");
                 for (int i = 0; i < ugs.length; i++) {
                     if (nodes[i].valid) {
-                        pairCrits.write(ugs[i] + ", "+ crit0[i]);
+                        pairCrits.write(ugs[i] + ", "+ crit0[i]+"\n");
 
                         outputPairs.write(nodes[i].externalId + "," + ugs[i].getValue() + "\n");
                     }
                 }
+
                 outputPairs.close();
 
-                pairCrits.write(sum0.toString()+"\n");
+                pairCrits.write(sum0.getValue()+"\n");
+                pairCrits.close();
             }
-
         }
         else {
-            //Multi Criterion with Pareto
-
-            pairCrits = new FileWriter("Results/" + regionFile + "-ParetoSolutionDetails.csv");
+            pairCrits = new FileWriter("Results/OC_" + regionFile + "-Exception.csv");
 
             int index = 0;
 
             Solver solver = m.getSolver();
-            //solver.setSearch(Search.activityBasedSearch(ugs));
+            solver.setSearch(Search.activityBasedSearch(ugs));
 
-            FileWriter allSolutionPairs = new FileWriter("Results/" + regionFile + "-OneCritSolutons.csv");
-            FileWriter timesFile = new FileWriter("Results/" + regionFile + "-Times.csv");
+            FileWriter allSolutionPairs = new FileWriter("Results/OC_" + regionFile + "-OneCritSolutons.csv");
+            FileWriter crits = new FileWriter("Results/OC_" + regionFile + "-Criteria.csv");
 
             //BufferedWriter out = new BufferedWriter(allSolutionPairs);
             System.out.println("Running Solver");
@@ -215,18 +214,20 @@ public class OneCrit {
             //13 hours 46800000
             //14 hours 50400000
 
+
             int l = 1;
             long startTime = System.currentTimeMillis(); //fetch starting time
             try {
-                while (solver.solve() & (System.currentTimeMillis() - startTime) < 28800000) {
-                    allSolutionPairs.write("Solution: " + l + ", TimeStamp: " + (System.currentTimeMillis() - startTime) + "ms");
+                while (solver.solve()) {
+                    allSolutionPairs.write("Solution: " + l + " Crit0: "+sum0.getValue()+ " TimeStamp: " + (System.currentTimeMillis() - startTime) + "ms\n");
 
                     for (int i = 0; i < nodes.length; i++) {
                         if (nodes[i].valid) {
                             allSolutionPairs.write(nodes[i].externalId + "," + ugs[i].getValue() + "\n");
                         }
                     }
-
+                    crits.write(sum0.getValue()+"\n");
+                    crits.flush();
                     allSolutionPairs.flush();
                     System.out.println("Found solution-" + l);
                     l++;
@@ -235,7 +236,7 @@ public class OneCrit {
                 pairCrits.write("Reached Exception after " + (System.currentTimeMillis() - startTime) + " milliseconds");
             }
 
-            timesFile.close();
+            crits.close();
 
             allSolutionPairs.close();
 

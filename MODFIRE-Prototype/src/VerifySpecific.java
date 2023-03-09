@@ -10,6 +10,7 @@ public class VerifySpecific {
     public static ArrayList<Integer> yearViolations = new ArrayList<Integer>();
     public static ArrayList<Integer> currentViolation = new ArrayList<Integer>();
     public static ArrayList<Float> largestClearCutInYear = new ArrayList<>();
+    public static ArrayList<ArrayList<Integer>> largestCCInYearMUS = new ArrayList<ArrayList<Integer>>();
 
     public static int returnInternal(UG[] nodes, int external){
         for(int i = 0; i < nodes.length; i++){
@@ -105,71 +106,6 @@ public class VerifySpecific {
         return g(ugIndex, ugIndex, period, 0, nodes, prescIndexes);
     }
 
-    public static void writeSolution(String reg, UG[] nodes, int solIndex, int regLen, FileWriter outputFile) throws IOException {
-        int s = (solIndex-1)*(regLen+1)+ 1;
-        int e = s + regLen;
-        String pairLine = null;
-
-
-
-        BufferedReader readerPar = new BufferedReader(new FileReader("RegionSolutions/"+reg));
-        for (int i = 1; i < s; i++) {
-            readerPar.readLine();
-        }
-
-        for(int i = s; i <= e; i++ ) {
-            pairLine = readerPar.readLine();
-            String P = pairLine.substring(0, 1);
-            if(P.compareToIgnoreCase("P") == 0){
-                continue;
-            }
-            else{
-                int externalId = Integer.parseInt(pairLine.split(",")[0]);
-                int presc = Integer.parseInt(pairLine.split(",")[1]);
-                outputFile.write(externalId+","+presc+"\n");
-
-            }
-
-        }
-        readerPar.close();
-
-    }
-
-    public static void readRegionFile(String reg, UG[] nodes, int solIndex, int regLen, int[] prescIndexes, int[] intExt) throws IOException {
-
-        int s = (solIndex-1)*(regLen+1)+ 1;
-        int e = s + regLen;
-        String pairLine = null;
-
-
-        BufferedReader readerPar = new BufferedReader(new FileReader("RegionSolutions/"+reg));
-        for (int i = 1; i < s; i++) {
-            readerPar.readLine();
-        }
-
-        for(int i = s; i <= e; i++ ) {
-            pairLine = readerPar.readLine();
-            String P = pairLine.substring(0, 1);
-            if(P.compareToIgnoreCase("P") == 0){
-                continue;
-            }
-            else{
-                int externalId = Integer.parseInt(pairLine.split(",")[0]);
-                int presc = Integer.parseInt(pairLine.split(",")[1]);
-
-                int internalId = returnInternal(nodes, externalId);
-                int prescIndex = indexOfPresc(nodes, internalId, presc);
-
-                nodes[internalId].valid = true;
-
-                intExt[internalId] = externalId;
-                prescIndexes[internalId] = prescIndex;
-
-            }
-
-        }
-        readerPar.close();
-    }
 
     public static void main(String[] args) throws Exception {
 
@@ -203,38 +139,67 @@ public class VerifySpecific {
         while(solutionsReader.hasNextLine()){
             String line = solutionsReader.nextLine();
 
-            String[] arr = line.split("\t");
-            int noUse = 0;
+            int externalId = Integer.parseInt(line.split(",")[0]);
+            int presc = Integer.parseInt(line.split(",")[1]);
 
-            for (int internalId = 0; internalId < nodes.length; internalId++) {
+            int internalId = returnInternal(nodes, externalId);
+            int prescIndex = indexOfPresc(nodes, internalId, presc);
 
-                if(nodes[internalId].noAdjacencies && nodes[internalId].valid) {
-                    noUse++;
-                }
-                else if(nodes[internalId].valid){
+            nodes[internalId].valid = true;
 
-                    for (int i = 0; i < nodes[internalId].years[prescIndexes[internalId]].length; i++) {
-                        int currentYear = nodes[internalId].years[prescIndexes[internalId]][i];
+            intExt[internalId] = externalId;
+            prescIndexes[internalId] = prescIndex;
+        }
 
-                        if (currentYear == -1) {
-                            noUse++;
+        solutionsReader.close();
+
+
+        int noUse = 0;
+
+        for(int i = 0; i<50;i++){
+            largestClearCutInYear.add(i,0f);
+            largestCCInYearMUS.add(i,null);
+        }
+
+        for (int internalId = 0; internalId < nodes.length; internalId++) {
+
+            if(nodes[internalId].noAdjacencies && nodes[internalId].valid) {
+                noUse++;
+            }
+            else if(nodes[internalId].valid){
+
+                for (int i = 0; i < nodes[internalId].years[prescIndexes[internalId]].length; i++) {
+                    int currentYear = nodes[internalId].years[prescIndexes[internalId]][i];
+
+                    if (currentYear == -1) {
+                        noUse++;
+                    }
+                    else {
+                        float sum = glade(internalId, currentYear, nodes, prescIndexes);
+                        if(sum > largestClearCutInYear.get(currentYear-2020)){
+                            largestClearCutInYear.set(currentYear-2020, sum);
+                            largestCCInYearMUS.set(currentYear - 2020, (ArrayList) currentViolation.clone());
                         }
-                        else {
-                            float sum = glade(internalId, currentYear, nodes, prescIndexes);
-
-                            if(sum > areaLimit){
-                                insertCurrentViolation(sum, currentYear);
-                            }
-                            currentViolation.clear();
-
-                            for (UG node : nodes) node.treatedThisYear = false;
+                        if(sum > areaLimit){
+                            insertCurrentViolation(sum, currentYear);
                         }
+                        currentViolation.clear();
+
+                        for (UG node : nodes) node.treatedThisYear = false;
                     }
                 }
             }
         }
 
-        solutionsReader.close();
+
+        FileWriter largestCCs = new FileWriter("YearlyLargestCC");
+        FileWriter largestCCMUs = new FileWriter("YearlyLargestCCMUs");
+        for(int i = 0; i<largestClearCutInYear.size();i++){
+            largestCCs.write(String.valueOf(largestClearCutInYear.get(i)+"\n"));
+            largestCCMUs.write(String.valueOf(largestCCInYearMUS.get(i)+"\n"));
+        }
+        largestCCs.close();
+        largestCCMUs.close();
 
         if (violationGraphs.isEmpty()) {
             System.out.println("There were no limit violations in this solution");

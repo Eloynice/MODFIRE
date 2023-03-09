@@ -107,7 +107,7 @@ public class NoCriteria {
         pairCrits = new FileWriter("Results/"+regionFile+"-Exception.csv");
 
         Solver solver = m.getSolver();
-        //solver.setSearch(Search.activityBasedSearch(ugs));
+        solver.setSearch(Search.activityBasedSearch(ugs));
         //solver.setSearch(Search.minDomUBSearch(ugs));
 
         FileWriter allSolutionPairs = new FileWriter("Results/"+"NC-"+regionFile+"-AllSolutions.csv");
@@ -122,7 +122,8 @@ public class NoCriteria {
         int l = 1;
         long startTime = System.currentTimeMillis(); //fetch starting time
         try{
-            while(solver.solve() & (System.currentTimeMillis()-startTime)<50400000)
+            while(solver.solve())
+            //while(solver.solve() & (System.currentTimeMillis()-startTime)<50400000)
             {
                 allSolutionPairs.write("Solution: "+l+", TimeStamp: "+ (System.currentTimeMillis()-startTime)+"ms\n");
 

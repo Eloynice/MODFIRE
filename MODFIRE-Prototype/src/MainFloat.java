@@ -475,7 +475,7 @@ public class MainFloat {
 
             switch(singleFlag) {
                 case 0:
-                    //m.setObjective(Model.MAXIMIZE, sum0);
+                    m.setObjective(Model.MAXIMIZE, sum0);
                     break;
                 case 1:
                     m.setObjective(Model.MAXIMIZE, sum1);
@@ -520,12 +520,12 @@ public class MainFloat {
             //ParallelPortfolio portfolio = new ParallelPortfolio(false);
             //portfolio.stealNogoodsOnRestarts();
             //portfolio.addModel(m);
-            //s.setSearch(Search.activityBasedSearch(ugs));
+            s.setSearch(Search.activityBasedSearch(ugs),Search.activityBasedSearch(sum0));
             //portfolio.addModel(m);
 
             //if(portfolio.solve()){
             if (s.solve()) {
-                System.out.println("FOUND OPTIMAL SOLUTION!");
+                System.out.println("FOUND OPTIMAL SOLUTION! "+ sum0.getValue());
                 FileWriter outputPairs = new FileWriter("Results/"+regionFile+"-SingleSolution.csv");
 
                 for (int i = 0; i < ugs.length; i++) {
